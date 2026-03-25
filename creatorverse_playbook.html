@@ -1,994 +1,1486 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>CreatorVerse — Marketing Playbook</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.383.0/lucide.min.js"></script>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Unbounded:wght@300;400;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Unbounded:wght@300;400;700;900&display=swap');
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --lime:#E2FF00;
+  --cyan:#00D1FF;
+  --z950:#09090b;
+  --z900:#18181b;
+  --z800:#27272a;
+  --z700:#3f3f46;
+  --z600:#52525b;
+  --z500:#71717a;
+  --z400:#a1a1aa;
+  --z300:#d4d4d8;
+}
+html,body{height:100%;overflow:hidden;background:#000;color:#fff;font-family:'Syne',sans-serif}
+#app{position:fixed;inset:0;display:flex;flex-direction:column;overflow:hidden}
 
-  :root {
-    --lime: #E2FF00;
-    --cyan: #00D1FF;
-    --black: #000000;
-    --zinc-950: #09090b;
-    --zinc-900: #18181b;
-    --zinc-800: #27272a;
-    --zinc-700: #3f3f46;
-    --zinc-600: #52525b;
-    --zinc-500: #71717a;
-    --zinc-400: #a1a1aa;
-    --zinc-300: #d4d4d8;
-    --white: #ffffff;
-  }
+/* GRID */
+.grid-bg{position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.15}
 
-  html, body {
-    height: 100%;
-    overflow: hidden;
-    background: #000;
-    color: #fff;
-    font-family: 'Syne', sans-serif;
-  }
+/* PROGRESS */
+.progress-bar{position:absolute;top:0;left:0;width:100%;height:3px;background:var(--z900);z-index:50}
+.progress-fill{height:100%;background:var(--lime);transition:width .35s ease}
 
-  #app {
-    position: fixed;
-    inset: 0;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
+/* HEADER */
+header{flex:none;padding:1rem 3rem;display:flex;justify-content:space-between;align-items:center;z-index:40;background:rgba(0,0,0,.75);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.05);position:relative}
+.logo{display:flex;align-items:center;gap:.5rem}
+.logo-mark{width:28px;height:28px;background:#fff;color:#000;font-weight:900;display:flex;align-items:center;justify-content:center;font-style:italic;font-family:'Unbounded',sans-serif;font-size:13px}
+.logo-text{font-family:'Unbounded',sans-serif;font-weight:900;font-size:12px;text-transform:uppercase;letter-spacing:-.02em;font-style:italic}
+.slide-counter{font-family:'Space Mono',monospace;font-size:10px;color:var(--z500);text-transform:uppercase;letter-spacing:.3em;font-weight:700}
 
-  /* GRID BG */
-  .grid-bg {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    opacity: 0.2;
-  }
+/* MAIN */
+main{flex-grow:1;overflow-y:auto;overflow-x:hidden;position:relative;display:flex;flex-direction:column}
+main::-webkit-scrollbar{width:3px}
+main::-webkit-scrollbar-thumb{background:var(--z800);border-radius:2px}
 
-  /* PROGRESS */
-  .progress-bar {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%;
-    height: 3px;
-    background: var(--zinc-900);
-    z-index: 50;
-  }
-  .progress-fill {
-    height: 100%;
-    background: var(--lime);
-    transition: width 0.3s ease;
-  }
+/* SLIDES */
+.slide{display:none;flex-grow:1;flex-direction:column;animation:fadeUp .4s ease}
+.slide.active{display:flex}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 
-  /* HEADER */
-  header {
-    flex: none;
-    padding: 1.2rem 3rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    z-index: 40;
-    background: rgba(0,0,0,0.6);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(255,255,255,0.05);
-    position: relative;
-  }
-  .logo {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  .logo-mark {
-    width: 28px; height: 28px;
-    background: #fff;
-    color: #000;
-    font-weight: 900;
-    display: flex; align-items: center; justify-content: center;
-    font-style: italic;
-    font-family: 'Unbounded', sans-serif;
-    font-size: 14px;
-  }
-  .logo-text {
-    font-family: 'Unbounded', sans-serif;
-    font-weight: 900;
-    font-size: 13px;
-    text-transform: uppercase;
-    letter-spacing: -0.03em;
-    font-style: italic;
-  }
-  .slide-counter {
-    font-family: 'Space Mono', monospace;
-    font-size: 10px;
-    color: var(--zinc-500);
-    text-transform: uppercase;
-    letter-spacing: 0.3em;
-    font-weight: 700;
-  }
+/* LAYOUTS */
+.hero-wrap{flex-grow:1;display:flex;align-items:center;justify-content:center;padding:2.5rem 5rem 8rem}
+.content-wrap{padding:2rem 5rem 10rem;max-width:1400px;width:100%;margin:0 auto;flex-grow:1}
+.section-tag{font-family:'Space Mono',monospace;font-size:9px;color:var(--lime);text-transform:uppercase;letter-spacing:.6em;font-weight:700;font-style:italic;border-bottom:1px solid rgba(226,255,0,.2);padding-bottom:.4rem;display:inline-block;margin-bottom:.75rem}
+.slide-h2{font-family:'Unbounded',sans-serif;font-size:clamp(2rem,4.5vw,4.5rem);font-weight:900;text-transform:uppercase;letter-spacing:-.04em;line-height:.9;font-style:italic;margin-bottom:2rem;color:#fff}
+.slide-h2 span{color:var(--cyan)}
+.slide-h2 .lime{color:var(--lime)}
 
-  /* MAIN */
-  main {
-    flex-grow: 1;
-    overflow-y: auto;
-    overflow-x: hidden;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-  }
-  main::-webkit-scrollbar { width: 4px; }
-  main::-webkit-scrollbar-track { background: transparent; }
-  main::-webkit-scrollbar-thumb { background: var(--zinc-800); border-radius: 2px; }
+/* GRID HELPERS */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;align-items:start}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}
+.col2{grid-column:span 2}
+.col3{grid-column:span 3}
+.flex{display:flex;gap:1rem}
+.flex-c{display:flex;flex-direction:column;gap:1rem}
+.flex-center{display:flex;align-items:center;justify-content:center}
+.gap2{gap:2rem}
 
-  /* SLIDES */
-  .slide {
-    display: none;
-    flex-grow: 1;
-    flex-direction: column;
-    animation: fadeIn 0.4s ease;
-  }
-  .slide.active { display: flex; }
+/* CARDS */
+.card{background:var(--z900);border:1px solid var(--z800);padding:1.75rem}
+.card-sm{background:var(--z900);border:1px solid var(--z800);padding:1rem 1.25rem;font-size:11px;color:var(--z400);font-style:italic;line-height:1.6}
+.card-lime{border-color:rgba(226,255,0,.3)!important}
+.card-cyan{border-color:rgba(0,209,255,.3)!important}
+.label{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.4em;margin-bottom:.5rem}
+.label-lime{color:var(--lime)}
+.label-cyan{color:var(--cyan)}
+.body-lg{font-size:1.2rem;font-weight:300;font-style:italic;line-height:1.7;color:var(--z400)}
+.body-md{font-size:.9rem;color:var(--z400);font-style:italic;line-height:1.7}
+.body-sm{font-size:.75rem;color:var(--z500);line-height:1.7}
+.bold{font-weight:700}
+.white{color:#fff}
+.mono{font-family:'Space Mono',monospace}
+.italic{font-style:italic}
 
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+/* TABLE */
+.tbl-wrap{border:1px solid var(--z800);overflow:hidden}
+table{width:100%;text-align:left;border-collapse:collapse}
+thead tr{background:var(--z950)}
+th{padding:.75rem 1rem;border-bottom:1px solid var(--z800);font-family:'Space Mono',monospace;font-size:9px;color:var(--z600);text-transform:uppercase;letter-spacing:.3em}
+td{padding:.75rem 1rem;border-bottom:1px solid var(--z800);font-size:11px}
+tr:hover td{background:rgba(255,255,255,.02)}
+.td-lime{font-family:'Unbounded',sans-serif;font-size:10px;font-weight:900;color:var(--lime);font-style:italic;text-transform:uppercase}
+.td-val{color:var(--z400);font-style:italic}
+.td-cyan{color:var(--cyan);font-weight:900}
+.td-white{color:#fff;font-weight:900;font-style:italic}
 
-  /* HERO SLIDE */
-  .hero-slide {
-    flex-grow: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 3rem 5rem 8rem;
-  }
-  .hero-inner { width: 100%; }
+/* STEP ROWS */
+.step-row{padding:1rem 1.5rem;background:var(--z900);border:1px solid var(--z800);display:flex;align-items:center;gap:1.25rem;transition:border-color .2s}
+.step-row:hover{border-color:var(--cyan)}
+.step-num{font-family:'Unbounded',sans-serif;font-size:1.5rem;font-weight:900;color:var(--z800);flex-shrink:0;width:2rem}
+.step-txt{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
 
-  /* CONTENT SLIDE */
-  .content-slide {
-    padding: 2.5rem 5rem 10rem;
-    max-width: 1400px;
-    width: 100%;
-    margin: 0 auto;
-    flex-grow: 1;
-  }
-  .section-label {
-    font-family: 'Space Mono', monospace;
-    font-size: 10px;
-    color: var(--lime);
-    text-transform: uppercase;
-    letter-spacing: 0.6em;
-    font-weight: 700;
-    font-style: italic;
-    border-bottom: 1px solid rgba(226,255,0,0.2);
-    padding-bottom: 0.5rem;
-    display: inline-block;
-    margin-bottom: 1rem;
-  }
-  .slide-title {
-    font-family: 'Unbounded', sans-serif;
-    font-size: clamp(2rem, 5vw, 5rem);
-    font-weight: 900;
-    text-transform: uppercase;
-    letter-spacing: -0.04em;
-    line-height: 0.9;
-    font-style: italic;
-    margin-bottom: 2.5rem;
-    color: #fff;
-  }
+/* QUOTE BLOCK */
+.qblock{padding:1.75rem 2rem;border-left:4px solid var(--lime);background:var(--z900);font-size:1rem;font-weight:700;font-style:italic;color:var(--z300)}
+.qblock-cyan{border-color:var(--cyan)}
 
-  /* TYPOGRAPHY UTILITIES */
-  .font-mono { font-family: 'Space Mono', monospace; }
-  .font-display { font-family: 'Unbounded', sans-serif; }
-  .italic { font-style: italic; }
-  .uppercase { text-transform: uppercase; }
-  .tracking-wide { letter-spacing: 0.3em; }
-  .tracking-widest { letter-spacing: 0.6em; }
+/* WHITE PANEL */
+.white-panel{background:#fff;color:#000;padding:1.75rem}
+.white-panel h3{font-family:'Unbounded',sans-serif;font-size:clamp(1.2rem,2.5vw,2rem);font-weight:900;text-transform:uppercase;font-style:italic;letter-spacing:-.04em;line-height:.9;margin-bottom:.75rem}
 
-  /* COLORS */
-  .text-lime { color: var(--lime); }
-  .text-cyan { color: var(--cyan); }
-  .text-zinc-300 { color: var(--zinc-300); }
-  .text-zinc-400 { color: var(--zinc-400); }
-  .text-zinc-500 { color: var(--zinc-500); }
-  .text-zinc-600 { color: var(--zinc-600); }
-  .text-white { color: #fff; }
+/* HERO */
+.hero-eyebrow{display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem}
+.hero-eyebrow-line{height:2px;width:3rem;background:var(--lime)}
+.hero-eyebrow-txt{font-family:'Space Mono',monospace;font-size:10px;color:var(--lime);letter-spacing:.4em;text-transform:uppercase;font-weight:700}
+.hero-h1{font-family:'Unbounded',sans-serif;font-size:clamp(2.5rem,8vw,8rem);font-weight:900;line-height:.85;letter-spacing:-.05em;text-transform:uppercase;font-style:italic}
+.hero-h1 .cyan{color:var(--cyan);filter:drop-shadow(0 0 60px rgba(0,209,255,.2))}
+.hero-sub{margin-top:2rem;font-size:clamp(.9rem,1.8vw,1.3rem);color:var(--z400);font-weight:300;line-height:1.7;max-width:700px}
+.hero-footer{margin-top:3rem;display:flex;justify-content:space-between;align-items:flex-end;border-top:1px solid var(--z900);padding-top:1.5rem}
+.hero-meta-label{font-family:'Space Mono',monospace;font-size:9px;color:var(--z600);text-transform:uppercase;letter-spacing:.3em;margin-bottom:.25rem}
+.hero-meta-name{font-family:'Unbounded',sans-serif;font-size:.9rem;font-weight:700;text-transform:uppercase;letter-spacing:-.02em}
+.hero-meta-email{font-family:'Space Mono',monospace;font-size:10px;color:var(--z500);font-style:italic}
 
-  /* CARDS */
-  .card {
-    background: var(--zinc-900);
-    border: 1px solid var(--zinc-800);
-    padding: 2rem;
-  }
-  .card-sm {
-    background: var(--zinc-900);
-    border: 1px solid var(--zinc-800);
-    padding: 1rem 1.25rem;
-    font-size: 11px;
-    color: var(--zinc-400);
-    font-style: italic;
-  }
+/* FOOTER NAV */
+.footer-nav{position:absolute;bottom:1.5rem;left:0;right:0;z-index:50;padding:0 3rem;pointer-events:none}
+.footer-inner{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;padding:.85rem 1.5rem;border:1px solid rgba(255,255,255,.1);background:rgba(9,9,11,.94);backdrop-filter:blur(24px);border-radius:50px;box-shadow:0 20px 60px rgba(0,0,0,.9);pointer-events:auto}
+.nav-btn{background:none;border:none;color:#fff;cursor:pointer;font-family:'Unbounded',sans-serif;font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.2em;display:flex;align-items:center;gap:.5rem;transition:color .2s;padding:.5rem}
+.nav-btn:hover{color:var(--cyan)}
+.nav-btn:disabled{opacity:0;pointer-events:none}
+.nav-center{font-family:'Space Mono',monospace;font-size:9px;color:var(--z600);text-transform:uppercase;letter-spacing:.4em;font-style:italic}
 
-  /* GRID HELPERS */
-  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; align-items: start; }
-  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.25rem; }
-  .col-span-2 { grid-column: span 2; }
-  .space-y { display: flex; flex-direction: column; gap: 1.5rem; }
-  .space-y-sm { display: flex; flex-direction: column; gap: 0.75rem; }
+/* AMBIENT */
+.glow-tr{position:absolute;top:20%;right:-25%;width:600px;height:600px;background:var(--cyan);border-radius:50%;filter:blur(200px);opacity:.03;pointer-events:none;z-index:0}
+.glow-bl{position:absolute;bottom:20%;left:-25%;width:600px;height:600px;background:var(--lime);border-radius:50%;filter:blur(200px);opacity:.03;pointer-events:none;z-index:0}
 
-  /* TABLE */
-  table { width: 100%; text-align: left; border-collapse: collapse; }
-  thead tr { background: var(--zinc-950); }
-  th {
-    padding: 1rem;
-    border-bottom: 1px solid var(--zinc-800);
-    font-family: 'Space Mono', monospace;
-    font-size: 10px;
-    color: var(--zinc-600);
-    text-transform: uppercase;
-    letter-spacing: 0.3em;
-  }
-  td { padding: 1rem; border-bottom: 1px solid var(--zinc-800); font-size: 12px; }
-  tr:hover td { background: rgba(255,255,255,0.02); }
-  .table-wrap { border: 1px solid var(--zinc-800); overflow: hidden; }
-  .td-key { font-weight: 900; color: var(--lime); font-style: italic; text-transform: uppercase; font-family: 'Unbounded', sans-serif; font-size: 11px; }
-  .td-val { color: var(--zinc-400); font-style: italic; }
-  .td-cyan { color: var(--cyan); font-weight: 900; }
-  .td-white { color: #fff; font-weight: 900; font-style: italic; }
+/* === SOCIAL MEDIA ILLUSTRATIONS === */
 
-  /* STEP ROW */
-  .step-row {
-    padding: 1.25rem 1.5rem;
-    background: var(--zinc-900);
-    border: 1px solid var(--zinc-800);
-    display: flex; align-items: center; gap: 1.5rem;
-    transition: border-color 0.2s;
-  }
-  .step-row:hover { border-color: var(--cyan); }
-  .step-num { font-size: 1.5rem; font-weight: 900; color: var(--zinc-800); font-family: 'Unbounded', sans-serif; flex-shrink: 0; }
-  .step-text { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #fff; }
+/* Instagram Post */
+.ig-post{background:#0a0a0a;border:1px solid #222;border-radius:12px;overflow:hidden;width:100%;max-width:320px}
+.ig-header{display:flex;align-items:center;gap:.6rem;padding:.75rem;border-bottom:1px solid #1a1a1a}
+.ig-avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--lime),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:#000;flex-shrink:0}
+.ig-handle{font-size:11px;font-weight:700}
+.ig-handle-sub{font-size:9px;color:#555}
+.ig-img{width:100%;aspect-ratio:1;background:var(--z900);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.ig-actions{padding:.6rem .75rem;display:flex;gap:.75rem;align-items:center}
+.ig-actions svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:2}
+.ig-likes{padding:0 .75rem;font-size:11px;font-weight:700;margin-bottom:.25rem}
+.ig-caption{padding:0 .75rem .75rem;font-size:10px;color:#aaa;line-height:1.5}
+.ig-caption strong{color:#fff;font-weight:700}
+.ig-tag{color:var(--cyan)}
 
-  /* INFO CHIP */
-  .info-chip {
-    background: var(--zinc-900);
-    border: 1px solid var(--zinc-800);
-    padding: 1.25rem 1.5rem;
-  }
-  .info-chip-label {
-    font-family: 'Space Mono', monospace;
-    font-size: 9px; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 0.5em;
-    margin-bottom: 0.5rem;
-  }
-  .info-chip-val { font-size: 11px; color: var(--zinc-400); font-style: italic; line-height: 1.6; }
+/* Reel card */
+.reel-card{background:#0a0a0a;border:1px solid #222;border-radius:12px;overflow:hidden;aspect-ratio:9/16;max-height:320px;position:relative;display:flex;flex-direction:column;justify-content:flex-end}
+.reel-bg{position:absolute;inset:0;background:linear-gradient(180deg,transparent 30%,rgba(0,0,0,.9))}
+.reel-info{position:relative;z-index:2;padding:.75rem}
+.reel-user{display:flex;align-items:center;gap:.5rem;margin-bottom:.5rem}
+.reel-ava{width:28px;height:28px;border-radius:50%;border:2px solid #fff}
+.reel-name{font-size:11px;font-weight:700}
+.reel-btn{font-size:9px;border:1px solid #fff;border-radius:20px;padding:.15rem .4rem;margin-left:.25rem;cursor:pointer}
+.reel-caption{font-size:10px;color:#ccc;line-height:1.4;margin-bottom:.4rem}
+.reel-tags{font-size:10px;color:var(--cyan)}
+.reel-sidebar{position:absolute;right:.5rem;bottom:2rem;display:flex;flex-direction:column;gap:1rem;align-items:center;z-index:2}
+.reel-action{display:flex;flex-direction:column;align-items:center;gap:.15rem}
+.reel-action svg{width:20px;height:20px;stroke:#fff;fill:none;stroke-width:2}
+.reel-action-n{font-size:9px;color:#fff}
 
-  /* QUOTE BLOCK */
-  .quote-block {
-    padding: 2rem 2.5rem;
-    border-left: 4px solid var(--lime);
-    background: var(--zinc-900);
-    font-size: clamp(1rem, 2vw, 1.4rem);
-    font-weight: 700;
-    font-style: italic;
-    color: var(--zinc-300);
-  }
-  .quote-block-cyan { border-color: var(--cyan); }
+/* UGC Card */
+.ugc-card{background:var(--z950);border:1px solid var(--z800);border-radius:8px;overflow:hidden;position:relative}
+.ugc-tag{position:absolute;top:.5rem;right:.5rem;background:var(--lime);color:#000;font-size:8px;font-weight:900;text-transform:uppercase;padding:.2rem .4rem;letter-spacing:.1em}
+.ugc-media{width:100%;aspect-ratio:4/3;background:var(--z900);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.ugc-footer{padding:.75rem}
+.ugc-username{font-size:10px;font-weight:700;color:#fff;margin-bottom:.2rem}
+.ugc-txt{font-size:9px;color:var(--z500);line-height:1.5}
+.ugc-stats{display:flex;gap:.75rem;margin-top:.4rem}
+.ugc-stat{font-size:9px;color:var(--z600);font-family:'Space Mono',monospace}
 
-  /* WHITE BLOCK */
-  .white-block {
-    background: #fff; color: #000;
-    padding: 2rem;
-  }
+/* DM Illustration */
+.dm-thread{background:#000;border:1px solid #1a1a1a;border-radius:12px;overflow:hidden;max-width:340px}
+.dm-header{padding:.75rem;border-bottom:1px solid #1a1a1a;display:flex;align-items:center;gap:.5rem}
+.dm-ava{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045)}
+.dm-name{font-size:11px;font-weight:700}
+.dm-status{font-size:9px;color:#0d0}
+.dm-body{padding:.75rem;display:flex;flex-direction:column;gap:.5rem}
+.dm-bubble{max-width:80%;padding:.5rem .75rem;border-radius:18px;font-size:10px;line-height:1.5}
+.dm-them{background:#1a1a1a;align-self:flex-start;color:#ddd;border-radius:4px 18px 18px 18px}
+.dm-us{background:var(--cyan);color:#000;align-self:flex-end;font-weight:700;border-radius:18px 4px 18px 18px}
+.dm-time{font-size:8px;color:#333;text-align:center;margin:.25rem 0}
 
-  /* FOOTER NAV */
-  .footer-nav {
-    position: absolute;
-    bottom: 2rem;
-    left: 0; right: 0;
-    z-index: 50;
-    padding: 0 3rem;
-    pointer-events: none;
-  }
-  .footer-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 1.75rem;
-    border: 1px solid rgba(255,255,255,0.1);
-    background: rgba(9,9,11,0.92);
-    backdrop-filter: blur(20px);
-    border-radius: 50px;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.8);
-    pointer-events: auto;
-  }
-  .nav-btn {
-    background: none; border: none; color: #fff; cursor: pointer;
-    font-family: 'Unbounded', sans-serif;
-    font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.2em;
-    display: flex; align-items: center; gap: 0.5rem;
-    transition: color 0.2s;
-    padding: 0.5rem;
-  }
-  .nav-btn:hover { color: var(--cyan); }
-  .nav-btn:disabled { opacity: 0; pointer-events: none; }
-  .nav-center {
-    font-family: 'Space Mono', monospace;
-    font-size: 9px; color: var(--zinc-600);
-    text-transform: uppercase; letter-spacing: 0.4em;
-    font-style: italic;
-  }
+/* LinkedIn Post */
+.li-post{background:#0a0a0a;border:1px solid #1a1a1a;border-radius:8px;overflow:hidden;max-width:380px}
+.li-header{padding:.75rem;display:flex;gap:.6rem;align-items:flex-start}
+.li-ava{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#0077b5,#00a0dc);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#fff;flex-shrink:0}
+.li-meta{flex:1}
+.li-name{font-size:12px;font-weight:700}
+.li-role{font-size:10px;color:#555}
+.li-body{padding:0 .75rem .75rem;font-size:11px;color:#aaa;line-height:1.6}
+.li-body strong{color:#fff}
+.li-engagement{padding:.5rem .75rem;border-top:1px solid #1a1a1a;display:flex;gap:1rem}
+.li-eng-item{font-size:10px;color:#555;cursor:pointer}
+.li-eng-item:hover{color:#0077b5}
 
-  /* AMBIENT GLOW */
-  .glow-tr {
-    position: absolute; top: 25%; right: -25%;
-    width: 700px; height: 700px;
-    background: var(--cyan);
-    border-radius: 50%;
-    filter: blur(220px);
-    opacity: 0.03;
-    pointer-events: none; z-index: 0;
-  }
-  .glow-bl {
-    position: absolute; bottom: 25%; left: -25%;
-    width: 700px; height: 700px;
-    background: var(--lime);
-    border-radius: 50%;
-    filter: blur(220px);
-    opacity: 0.03;
-    pointer-events: none; z-index: 0;
-  }
+/* Poster Illustration */
+.poster{background:#f0ebe0;color:#111;padding:1.5rem;border:3px solid #111;position:relative;font-family:'Unbounded',sans-serif}
+.poster::before{content:'';position:absolute;inset:4px;border:1px solid #111;pointer-events:none}
+.poster-title{font-size:1.4rem;font-weight:900;text-transform:uppercase;letter-spacing:-.03em;margin-bottom:.75rem;line-height:1}
+.poster-body{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;line-height:1.8;margin-bottom:1rem;border-top:2px solid #111;border-bottom:2px solid #111;padding:.5rem 0}
+.poster-qr{width:50px;height:50px;background:#111;display:flex;align-items:center;justify-content:center}
+.poster-footer{display:flex;justify-content:space-between;align-items:flex-end;margin-top:.75rem}
+.poster-brand{font-size:.6rem;font-weight:900;text-transform:uppercase;letter-spacing:.1em}
 
-  /* HERO TYPOGRAPHY */
-  .hero-eyebrow {
-    display: flex; align-items: center; gap: 1rem;
-    margin-bottom: 1.5rem;
-  }
-  .hero-eyebrow-line { height: 2px; width: 3rem; background: var(--lime); }
-  .hero-eyebrow-text {
-    font-family: 'Space Mono', monospace; font-size: 10px;
-    color: var(--lime); letter-spacing: 0.4em; text-transform: uppercase; font-weight: 700;
-  }
-  .hero-h1 {
-    font-family: 'Unbounded', sans-serif;
-    font-size: clamp(3rem, 9vw, 9rem);
-    font-weight: 900; line-height: 0.85;
-    letter-spacing: -0.05em; text-transform: uppercase; font-style: italic;
-    color: #fff;
-  }
-  .hero-sub {
-    margin-top: 2.5rem;
-    font-size: clamp(1rem, 2vw, 1.4rem);
-    color: var(--zinc-400); font-weight: 300; line-height: 1.7;
-    max-width: 800px;
-  }
-  .hero-footer {
-    margin-top: 3.5rem;
-    display: flex; justify-content: space-between; align-items: flex-end;
-    border-top: 1px solid var(--zinc-900); padding-top: 2rem; gap: 2rem;
-  }
-  .hero-footer-label {
-    font-family: 'Space Mono', monospace; font-size: 9px;
-    color: var(--zinc-600); text-transform: uppercase; letter-spacing: 0.3em; margin-bottom: 0.25rem;
-  }
-  .hero-footer-name {
-    font-family: 'Unbounded', sans-serif; font-size: 1rem;
-    font-weight: 700; text-transform: uppercase; letter-spacing: -0.02em;
-  }
-  .hero-footer-email {
-    font-family: 'Space Mono', monospace; font-size: 11px;
-    color: var(--zinc-500); font-style: italic;
-  }
-  .hero-footer-note {
-    font-family: 'Space Mono', monospace; font-size: 9px;
-    color: var(--zinc-700); text-transform: uppercase; letter-spacing: 0.1em; line-height: 1.6;
-  }
+/* Chai cup */
+.chai-cup{background:#fff8f0;border:2px solid #e0d5c0;border-radius:4px 4px 8px 8px;padding:1rem;text-align:center;min-height:160px;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden}
+.chai-cup::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--lime),var(--cyan))}
+.chai-cup-logo{font-family:'Unbounded',sans-serif;font-size:.6rem;font-weight:900;color:#111;text-transform:uppercase;letter-spacing:.1em}
+.chai-qr{width:40px;height:40px;background:#111;margin:0 auto}
+.chai-cta{font-size:.55rem;font-weight:700;text-transform:uppercase;color:#555;letter-spacing:.08em}
 
-  /* ICON FEATURE ROW */
-  .feature-icons {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 1rem;
-  }
-  .feature-icon-card {
-    padding: 1.5rem; border: 1px solid var(--zinc-800);
-    display: flex; flex-direction: column; align-items: center; text-align: center; gap: 0.75rem;
-  }
-  .feature-icon-label {
-    font-size: 9px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.3em;
-    font-family: 'Space Mono', monospace;
-  }
+/* Auto sticker */
+.auto-sticker{background:#ffcc00;border:3px solid #111;padding:1rem;text-align:center;font-family:'Unbounded',sans-serif}
+.auto-sticker-txt{font-size:.65rem;font-weight:900;text-transform:uppercase;line-height:1.5;color:#111;letter-spacing:.02em}
+.auto-sticker-qr{width:36px;height:36px;background:#111;margin:.5rem auto 0}
 
-  /* CLOSING SLIDE */
-  .closing-slide {
-    flex-grow: 1; display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    text-align: center; padding: 3rem 5rem 9rem;
-  }
-  .closing-h2 {
-    font-family: 'Unbounded', sans-serif;
-    font-size: clamp(2rem, 5.5vw, 6rem);
-    font-weight: 900; line-height: 0.9;
-    text-transform: uppercase; font-style: italic;
-    letter-spacing: -0.04em; color: #fff;
-    max-width: 1200px;
-  }
-  .closing-body {
-    margin-top: 2.5rem; max-width: 680px;
-    color: var(--zinc-500); font-weight: 300; font-size: 1rem;
-    line-height: 1.8; font-style: italic;
-  }
+/* Tshirt */
+.tshirt-wrap{display:flex;align-items:center;justify-content:center;padding:1.5rem}
+.tshirt-svg{width:140px;height:auto}
 
-  /* PULSING DOT */
-  @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.5; transform: scale(0.85); }
-  }
-  .pulse-dot {
-    width: 3rem; height: 3rem;
-    background: var(--cyan); border-radius: 50%;
-    animation: pulse 2s ease-in-out infinite;
-  }
+/* STAT BIG */
+.big-stat{font-family:'Unbounded',sans-serif;font-size:clamp(2rem,4vw,3.5rem);font-weight:900;letter-spacing:-.04em;font-style:italic}
+.big-stat.lime{color:var(--lime)}
+.big-stat.cyan{color:var(--cyan)}
 
-  /* MINI CARD GRID */
-  .mini-card {
-    background: rgba(9,9,11,0.6); border: 1px solid var(--zinc-900);
-    padding: 1.5rem 2rem;
-    display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
-  }
-  .mini-card-k { font-size: 9px; font-weight: 900; text-transform: uppercase; color: var(--lime); font-family: 'Space Mono', monospace; }
-  .mini-card-v { font-size: 10px; font-style: italic; color: var(--zinc-500); line-height: 1.5; }
+/* PILL */
+.pill{display:inline-flex;align-items:center;gap:.4rem;padding:.3rem .75rem;border:1px solid var(--z800);border-radius:20px;font-family:'Space Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.2em;color:var(--z500)}
 
-  /* ARSENAL SMALL CARD */
-  .arsenal-card {
-    background: rgba(24,24,27,0.6); border: 1px solid var(--zinc-800);
-    padding: 1.5rem;
-  }
-  .arsenal-title {
-    font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700;
-    text-transform: uppercase; color: var(--lime); margin-bottom: 0.75rem; font-style: italic;
-  }
-  .arsenal-body { font-size: 10px; color: var(--zinc-500); line-height: 1.7; font-style: italic; }
+/* ARROW connector */
+.arrow-row{display:flex;align-items:center;gap:0}
+.arrow-box{background:var(--z900);border:1px solid var(--z800);padding:.75rem 1rem;font-size:10px;font-weight:700;text-transform:uppercase;flex:1;text-align:center}
+.arrow-sep{color:var(--lime);font-size:1.2rem;flex-shrink:0;padding:0 .25rem}
 
-  /* UNIT ECONOMICS */
-  .unit-box {
-    background: #000; border: 1px solid var(--zinc-800); padding: 1.5rem;
-  }
-  .unit-box-text {
-    font-family: 'Unbounded', sans-serif;
-    font-size: clamp(1rem, 2vw, 1.5rem); font-weight: 900; font-style: italic;
-    text-transform: uppercase; line-height: 1;
-    letter-spacing: -0.03em;
-  }
+/* CLOSING */
+.closing-h2{font-family:'Unbounded',sans-serif;font-size:clamp(2rem,5vw,5.5rem);font-weight:900;line-height:.9;text-transform:uppercase;font-style:italic;letter-spacing:-.04em;color:#fff;max-width:1100px}
 
-  /* HOVER HIGHLIGHT */
-  .hover-cyan:hover { border-color: var(--cyan) !important; }
-  .hover-lime:hover { border-color: var(--lime) !important; }
+/* Animated pulse */
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.85)}}
+.pulse{animation:pulse 2.5s ease-in-out infinite}
 
-  /* RESPONSIVE */
-  @media (max-width: 768px) {
-    header { padding: 1rem 1.5rem; }
-    .content-slide { padding: 1.5rem 1.5rem 9rem; }
-    .hero-slide { padding: 2rem 1.5rem 8rem; }
-    .grid-2, .grid-3 { grid-template-columns: 1fr; }
-    .col-span-2 { grid-column: span 1; }
-    .feature-icons { grid-template-columns: 1fr; }
-    .footer-nav { padding: 0 1rem; bottom: 1rem; }
-    .footer-inner { padding: 0.75rem 1.25rem; }
-    .closing-slide { padding: 2rem 1.5rem 9rem; }
-    .hero-footer { flex-direction: column; align-items: flex-start; }
-    .mini-card { grid-template-columns: 1fr; }
-  }
+/* Ticker */
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.ticker-track{white-space:nowrap;display:inline-block;animation:ticker 18s linear infinite}
+.ticker-wrap{overflow:hidden;border-top:1px solid var(--z800);border-bottom:1px solid var(--z800);padding:.5rem 0;background:var(--z950)}
+.ticker-item{display:inline-flex;align-items:center;gap:.5rem;padding:0 2rem;font-family:'Space Mono',monospace;font-size:10px;color:var(--z600);text-transform:uppercase;letter-spacing:.2em}
+.ticker-dot{width:4px;height:4px;background:var(--lime);border-radius:50%;flex-shrink:0}
+
+/* Notification badge */
+.notif{background:#ff3b30;border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:900}
+
+/* Phone frame */
+.phone-frame{background:#0a0a0a;border:2px solid #222;border-radius:36px;padding:1rem .5rem;width:180px;flex-shrink:0;position:relative}
+.phone-notch{width:60px;height:16px;background:#000;border-radius:0 0 12px 12px;margin:0 auto .5rem}
+.phone-screen{background:var(--z950);border-radius:24px;overflow:hidden;min-height:280px}
+.phone-home{width:40px;height:4px;background:#333;border-radius:2px;margin:.75rem auto 0}
+
+/* Leaderboard */
+.lb-row{display:flex;align-items:center;gap:.75rem;padding:.6rem .75rem;border-bottom:1px solid var(--z800)}
+.lb-rank{font-family:'Unbounded',sans-serif;font-size:.8rem;font-weight:900;color:var(--z700);width:20px;flex-shrink:0}
+.lb-rank.gold{color:#FFD700}
+.lb-rank.silver{color:#C0C0C0}
+.lb-rank.bronze{color:#CD7F32}
+.lb-college{flex:1;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.lb-count{font-family:'Space Mono',monospace;font-size:10px;color:var(--cyan);font-weight:700}
+.lb-bar{height:3px;background:var(--z800);border-radius:2px;margin-top:.2rem;position:relative}
+.lb-bar-fill{height:100%;background:var(--cyan);border-radius:2px}
+
+/* Escrow flow */
+.flow-box{background:var(--z950);border:1px solid var(--z800);padding:.75rem 1rem;text-align:center}
+.flow-box .step-l{font-family:'Space Mono',monospace;font-size:8px;color:var(--z600);text-transform:uppercase;letter-spacing:.2em;margin-bottom:.25rem}
+.flow-box .step-v{font-size:11px;font-weight:700;color:#fff}
+.flow-arrow{display:flex;align-items:center;justify-content:center;color:var(--lime);font-size:1.1rem;padding:0 .25rem;flex-shrink:0}
+
+/* Wrapped card */
+.wrapped-card{background:linear-gradient(135deg,#1a0533,#0a1a2e);border:1px solid rgba(226,255,0,.2);border-radius:16px;padding:1.5rem;text-align:center;min-height:220px;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden}
+.wrapped-card::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 70% 20%,rgba(226,255,0,.08),transparent 60%)}
+.wrapped-year{font-family:'Unbounded',sans-serif;font-size:3rem;font-weight:900;color:var(--lime);line-height:1;font-style:italic}
+.wrapped-title{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.4em;color:var(--z500);margin-top:.25rem}
+.wrapped-stat-val{font-family:'Unbounded',sans-serif;font-size:1.2rem;font-weight:900;color:#fff}
+.wrapped-stat-label{font-size:.6rem;text-transform:uppercase;letter-spacing:.2em;color:var(--z500)}
+
+/* Rate calculator mock */
+.calc-ui{background:var(--z950);border:1px solid var(--z800);border-radius:8px;padding:1.25rem;font-size:11px}
+.calc-input{background:var(--z900);border:1px solid var(--z700);padding:.5rem .75rem;color:#fff;font-family:'Space Mono',monospace;font-size:10px;width:100%;margin-bottom:.5rem;outline:none}
+.calc-result{background:rgba(226,255,0,.08);border:1px solid rgba(226,255,0,.3);padding:.75rem;margin-top:.75rem;text-align:center}
+.calc-amount{font-family:'Unbounded',sans-serif;font-size:1.4rem;font-weight:900;color:var(--lime);font-style:italic}
+.calc-label{font-size:9px;text-transform:uppercase;letter-spacing:.2em;color:var(--z500);margin-bottom:.25rem}
+
+/* Billboard */
+.billboard{background:#f5f0e8;border:4px solid #222;padding:2rem;text-align:center;position:relative}
+.billboard::after{content:'';position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);width:8px;height:20px;background:#555}
+.billboard-title{font-family:'Unbounded',sans-serif;font-size:clamp(.9rem,2.5vw,1.6rem);font-weight:900;text-transform:uppercase;color:#111;letter-spacing:-.03em;line-height:1.1}
+.billboard-sub{font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:#555;margin-top:.5rem}
+.billboard-qr-wrap{display:flex;align-items:center;justify-content:center;gap:.75rem;margin-top:.75rem;padding-top:.75rem;border-top:2px solid #111}
+.billboard-qr{width:40px;height:40px;background:#111}
+.billboard-brand{font-family:'Unbounded',sans-serif;font-size:.65rem;font-weight:900;color:#111;text-transform:uppercase}
+
+/* scroll lock helper */
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-thumb{background:var(--z800)}
+
+@media(max-width:768px){
+  header{padding:.85rem 1.25rem}
+  .content-wrap{padding:1.5rem 1.25rem 9rem}
+  .hero-wrap{padding:2rem 1.5rem 8rem}
+  .g2,.g3,.g4{grid-template-columns:1fr}
+  .col2,.col3{grid-column:span 1}
+  .footer-nav{padding:0 1rem;bottom:1rem}
+  .footer-inner{padding:.65rem 1rem}
+  .hero-footer{flex-direction:column;align-items:flex-start;gap:1rem}
+  .ig-post,.reel-card,.dm-thread,.li-post{max-width:100%}
+}
 </style>
 </head>
 <body>
 <div id="app">
-  <!-- GRID BG -->
-  <svg class="grid-bg" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <pattern id="sg" width="20" height="20" patternUnits="userSpaceOnUse">
-        <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"/>
-      </pattern>
-      <pattern id="lg" width="100" height="100" patternUnits="userSpaceOnUse">
-        <rect width="100" height="100" fill="url(#sg)"/>
-        <path d="M 100 0 L 0 0 0 100" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
-      </pattern>
-    </defs>
-    <rect width="100%" height="100%" fill="url(#lg)" />
-  </svg>
 
-  <!-- AMBIENT -->
-  <div class="glow-tr"></div>
-  <div class="glow-bl"></div>
+<!-- BG GRID -->
+<svg class="grid-bg" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <pattern id="sg" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width=".5"/>
+    </pattern>
+    <pattern id="lg" width="100" height="100" patternUnits="userSpaceOnUse">
+      <rect width="100" height="100" fill="url(#sg)"/>
+      <path d="M 100 0 L 0 0 0 100" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#lg)"/>
+</svg>
+<div class="glow-tr"></div>
+<div class="glow-bl"></div>
 
-  <!-- PROGRESS -->
-  <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+<!-- PROGRESS -->
+<div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
 
-  <!-- HEADER -->
-  <header>
-    <div class="logo">
-      <div class="logo-mark">C</div>
-      <span class="logo-text">CreatorVerse</span>
-    </div>
-    <div class="slide-counter" id="counter">01 // 20</div>
-  </header>
+<!-- HEADER -->
+<header>
+  <div class="logo">
+    <div class="logo-mark">C</div>
+    <span class="logo-text">CreatorVerse</span>
+  </div>
+  <div class="slide-counter" id="counter">01 // 28</div>
+</header>
 
-  <!-- MAIN -->
-  <main id="slides-container">
+<main id="slides">
 
-    <!-- SLIDE 1: HERO -->
-    <div class="slide active">
-      <div class="hero-slide">
-        <div class="hero-inner">
-          <div class="hero-eyebrow">
-            <div class="hero-eyebrow-line"></div>
-            <span class="hero-eyebrow-text">Marketing Playbook</span>
-          </div>
-          <div class="hero-h1">LUCK SHOULDN'T<br><span style="color:var(--cyan)">DECIDE FAME.</span></div>
-          <p class="hero-sub">A Marketing Playbook for CreatorVerse.<br>From zero users to a two-sided creator economy — built from the ground up, the crackhead way.</p>
-          <div class="hero-footer">
-            <div>
-              <div class="hero-footer-label">Prepared by</div>
-              <div class="hero-footer-name">Diya Nathwani</div>
-              <div class="hero-footer-email">diyanathwani6563@gmail.com</div>
-            </div>
-            <div class="hero-footer-note">For evaluation purposes only.<br>Not for commercial use.</div>
-          </div>
-        </div>
+<!-- ===== SLIDE 01: HERO ===== -->
+<div class="slide active">
+  <div class="hero-wrap">
+    <div style="width:100%">
+      <div class="hero-eyebrow">
+        <div class="hero-eyebrow-line"></div>
+        <span class="hero-eyebrow-txt">Marketing Playbook 2024</span>
       </div>
-    </div>
-
-    <!-- SLIDE 2: THE PROBLEM -->
-    <div class="slide">
-      <div class="content-slide">
-        <div class="section-label">SECTION 01 — THE PROBLEM</div>
-        <h2 class="slide-title">India Has 80M+ Creators. Most of Them Are Invisible.</h2>
-        <div class="grid-2">
-          <div class="space-y">
-            <p style="font-size:clamp(1.1rem,2vw,1.6rem);font-weight:500;line-height:1.4;font-style:italic;color:#fff;">The creator economy is not broken because talent doesn't exist. It's broken because the system that should connect talent to opportunity never got built properly.</p>
-            <p style="color:var(--zinc-500);font-size:1rem;line-height:1.7;">Brands are sitting on budgets with no idea where to spend them authentically. Creators are producing content every single day with no reliable path to income. And somewhere in between, deals are being done over Instagram DMs, WhatsApp chains, and hastily typed emails — no structure, no trust, no transparency.</p>
-          </div>
-          <div class="space-y-sm">
-            <div class="card">
-              <div style="font-family:'Space Mono',monospace;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.5em;color:var(--cyan);margin-bottom:1rem;">The core insight</div>
-              <p class="quote-block" style="padding:0 0 0 1.25rem;font-size:1.1rem;">"The problem is not a lack of talent. The problem is a broken infrastructure."</p>
-            </div>
-            <div class="card-sm">Creator Side: Unclear pricing, no contracts, payment delays, no visibility into brand deals.</div>
-            <div class="card-sm">Brand Side: Fake followers, no ROI data, scattered communication, no way to verify authenticity.</div>
-            <div class="card-sm">The system: Deals close on gut feel, not data. Discovery is accidental, not structured.</div>
-          </div>
+      <div class="hero-h1">LUCK SHOULDN'T<br><span class="cyan">DECIDE FAME.</span></div>
+      <p class="hero-sub">From zero users to a two-sided creator economy — built from the ground up, the crackhead way.</p>
+      <div class="hero-footer">
+        <div>
+          <div class="hero-meta-label">Prepared by</div>
+          <div class="hero-meta-name">Diya Nathwani</div>
+          <div class="hero-meta-email">diyanathwani6563@gmail.com</div>
         </div>
+        <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--z700);text-transform:uppercase;letter-spacing:.1em;line-height:1.7;text-align:right">For evaluation purposes only.<br>Not for commercial use.</div>
       </div>
-    </div>
-
-    <!-- SLIDE 3: THE GAP -->
-    <div class="slide">
-      <div class="content-slide">
-        <div class="section-label">SECTION 01 — THE PROBLEM</div>
-        <h2 class="slide-title">The Strategic Gap.</h2>
-        <div class="space-y">
-          <div class="white-block">
-            <div style="font-family:'Unbounded',sans-serif;font-size:clamp(1.5rem,3.5vw,3rem);font-weight:900;text-transform:uppercase;font-style:italic;letter-spacing:-0.04em;line-height:0.9;margin-bottom:1rem;">"This is the exact gap CreatorVerse is built to fill."</div>
-            <p style="font-size:1rem;font-weight:700;text-transform:uppercase;line-height:1.5;">Not just another marketplace, but a structured, end-to-end operating system for creator-brand collaboration. From discovery to deal to payment, in one place.</p>
-          </div>
-          <div class="feature-icons">
-            <div class="feature-icon-card">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-              <span class="feature-icon-label">Discovery</span>
-            </div>
-            <div class="feature-icon-card">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--lime)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><path d="m9 15 2 2 4-4"/></svg>
-              <span class="feature-icon-label">Deal Flow</span>
-            </div>
-            <div class="feature-icon-card">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-              <span class="feature-icon-label">Secure Payment</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SLIDE 4: PLATFORM -->
-    <div class="slide">
-      <div class="content-slide">
-        <div class="section-label">SECTION 02 — THE PLATFORM</div>
-        <h2 class="slide-title">What is CreatorVerse?</h2>
-        <p style="color:var(--zinc-400);font-size:1.3rem;font-weight:300;font-style:italic;line-height:1.7;margin-bottom:1.5rem;">CreatorVerse is a creator-brand collaboration platform. The goal is simple: replace the chaos of DMs, Excel sheets, and verbal agreements with a clean, transparent workflow that works for both sides.</p>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Feature</th><th>What It Solves</th></tr></thead>
-            <tbody>
-              <tr><td class="td-key">Smart Discovery</td><td class="td-val">AI-powered search with real filters — niche, platform, audience size, engagement rate. No guesswork, no fake follower anxiety.</td></tr>
-              <tr><td class="td-key">Verified Profiles</td><td class="td-val">API-connected data from Instagram and YouTube. What you see is what is real — live stats, not screenshots.</td></tr>
-              <tr><td class="td-key">Auto-Contracts</td><td class="td-val">Deliverables, timelines, and revision rounds locked before work begins. Legal clarity in under 60 seconds.</td></tr>
-              <tr><td class="td-key">Smart Escrow</td><td class="td-val">Funds locked at contract sign. Auto-released when deliverables are approved. Creators get paid. Brands get quality. Both sleep at night.</td></tr>
-              <tr><td class="td-key">Unified Workspace</td><td class="td-val">Briefs, approvals, communication, and campaign tracking — all in one dashboard. No more 47-tab chaos.</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- SLIDE 5: GTM STRATEGY -->
-    <div class="slide">
-      <div class="content-slide">
-        <div class="section-label">SECTION 03 — GTM STRATEGY</div>
-        <h2 class="slide-title">The Growth Sequence.</h2>
-        <p style="color:var(--zinc-400);font-size:1.1rem;font-weight:300;line-height:1.7;margin-bottom:1.5rem;max-width:700px;">Most platforms try to onboard everyone at once and wonder why neither side shows up. CreatorVerse grows in sequence — each step builds credibility for the next.</p>
-        <div class="space-y-sm">
-          <div class="step-row"><span class="step-num">1</span><p class="step-text">Student Creators — The loudest, most competitive, most FOMO-driven segment. They come in fast.</p></div>
-          <div class="step-row"><span class="step-num">2</span><p class="step-text">Local Creators & Micro-Influencers — Under-monetized, hungry for structure, easy early wins.</p></div>
-          <div class="step-row"><span class="step-num">3</span><p class="step-text">Mid-Tier Creators (10k–200k) — Come once they see real deals happening on the platform.</p></div>
-          <div class="step-row"><span class="step-num">4</span><p class="step-text">High-Value Creators (selective) — Onboarded with white-glove attention. Not spammed, invited.</p></div>
-          <div class="step-row"><span class="step-num">5</span><p class="step-text">Brands — Arrive when there's a curated, verified creator pool waiting for them.</p></div>
-        </div>
-        <p style="font-family:'Space Mono',monospace;font-size:9px;color:var(--zinc-600);text-transform:uppercase;letter-spacing:0.5em;text-align:center;margin-top:1.5rem;">Supply-side dominance first, then monetization.</p>
-      </div>
-    </div>
-
-    <!-- SLIDE 6: PHASE ONE -->
-    <div class="slide">
-      <div class="content-slide">
-        <div class="section-label">SECTION 04 — PHASE ONE</div>
-        <h2 class="slide-title">FIND THE FACES</h2>
-        <div class="grid-2">
-          <div class="space-y">
-            <p style="font-size:clamp(1.2rem,2vw,1.75rem);font-weight:900;text-transform:uppercase;font-style:italic;line-height:1;letter-spacing:-0.03em;color:#fff;">A Nationwide Campus Creator Hunt.<br><span style="color:var(--cyan);">Powered by CreatorVerse.</span></p>
-            <p style="color:var(--zinc-500);font-size:1rem;font-style:italic;line-height:1.7;">India's campuses produce more undiscovered talent per square kilometre than anywhere else in the world. Dancers who've never been seen beyond their college auditorium. Comedians performing for 50 friends. Musicians who sound like albums but look like attendance registers.</p>
-            <div style="background:var(--lime);padding:1.5rem;color:#000;font-family:'Unbounded',sans-serif;font-size:clamp(1rem,2vw,1.4rem);font-weight:900;text-transform:uppercase;font-style:italic;line-height:1.1;">"India is looking for its next 1,000 faces — and we're starting at your college."</div>
-          </div>
-          <div class="space-y-sm">
-            <div class="info-chip"><div class="info-chip-label text-cyan">Behavioral Shift</div><p class="info-chip-val">Private talent → Public discovery → Social competition → Platform registration.</p></div>
-            <div class="info-chip"><div class="info-chip-label text-cyan">On Campus Dynamic</div><p class="info-chip-val">Students respond to identity, FOMO, peer competition, and visible recognition — not feature lists.</p></div>
-            <div class="info-chip"><div class="info-chip-label text-cyan">ROI Logic</div><p class="info-chip-val">Students cost almost nothing to acquire if the campaign is designed right. Cost per creator can be as low as ₹5–₹30 vs ₹200–₹800 through paid ads.</p></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SLIDE 7: IDEAS 1 & 2 -->
-    <div class="slide">
-      <div class="content-slide">
-        <div class="section-label">PHASE 1 — CRACKHEAD IDEAS</div>
-        <h2 class="slide-title">Ideas 1 & 2: Infrastructure & Guerrilla.</h2>
-        <div class="grid-2" style="gap:1.5rem;">
-          <div class="card space-y">
-            <div style="font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:0.3em;border-bottom:1px solid var(--zinc-700);padding-bottom:0.75rem;">1. The Campus Leaderboard</div>
-            <p style="font-size:11px;font-weight:700;font-style:italic;text-decoration:underline;text-underline-offset:4px;color:var(--zinc-400);">FOMO as Infrastructure</p>
-            <p style="font-size:11px;color:var(--zinc-500);line-height:1.7;">Launch a live digital scoreboard: colleges ranked by number of registered creators. Update it in real time. Broadcast it on the CreatorVerse Instagram story every day. Campus pride does the distribution work. Expected organic shares per college: 200–800 in the first 48 hours.</p>
-          </div>
-          <div class="card space-y">
-            <div style="font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:0.3em;border-bottom:1px solid var(--zinc-700);padding-bottom:0.75rem;">2. The Face Poster Drops</div>
-            <p style="font-size:11px;font-weight:700;font-style:italic;text-decoration:underline;text-underline-offset:4px;color:var(--zinc-400);">Guerrilla, But Make It Eerie</p>
-            <p style="font-size:11px;color:var(--zinc-500);line-height:1.7;">Paste black-and-white "MISSING" style posters across campuses. "THIS CAMPUS HAS UNDISCOVERED TALENT. WE'RE LOOKING FOR THEM. Scan below. Register. Be Found." No brand explanation. Just intrigue. The QR does the talking.</p>
-          </div>
-          <div class="col-span-2" style="background:var(--zinc-950);border:1px solid var(--zinc-900);padding:2rem;text-align:center;">
-            <p style="font-family:'Space Mono',monospace;font-size:9px;color:var(--zinc-600);text-transform:uppercase;letter-spacing:0.4em;">"Toilet doors: highest dwell time. Cost per college: ₹300–₹600."</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SLIDE 8: IDEAS 3 & 4 -->
-    <div class="slide">
-      <div class="content-slide">
-        <div class="section-label">PHASE 1 — CRACKHEAD IDEAS</div>
-        <h2 class="slide-title">Ideas 3 & 4: Social Distribution.</h2>
-        <div class="grid-2" style="gap:1.5rem;">
-          <div class="card space-y">
-            <div style="font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:0.3em;border-bottom:1px solid var(--zinc-700);padding-bottom:0.75rem;">3. 15-Second Talent Drop</div>
-            <p style="font-size:11px;font-weight:700;font-style:italic;text-decoration:underline;text-underline-offset:4px;color:var(--zinc-400);">UGC That Distributes Itself</p>
-            <p style="font-size:11px;color:var(--zinc-500);line-height:1.7;">Challenge format: post a 15-second clip of your talent with #FindTheFaces and tag @CreatorVerse. This is a talent hunt that students are proud to be part of. Each UGC post is a distribution event. Target: 500+ organic UGC posts in Week 1.</p>
-          </div>
-          <div class="card space-y">
-            <div style="font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:0.3em;border-bottom:1px solid var(--zinc-700);padding-bottom:0.75rem;">4. The CreatorVerse Face Tee</div>
-            <p style="font-size:11px;font-weight:700;font-style:italic;text-decoration:underline;text-underline-offset:4px;color:var(--zinc-400);">Wearable Billboard</p>
-            <p style="font-size:11px;color:var(--zinc-500);line-height:1.7;">Design a limited-edition t-shirt: bold graphic on front (a mosaic face made from hundreds of tiny creator profile photos). The shirt becomes a status signal. Give 2 tees per campus to the first 2 students who recruit 10 others. 60–80% of wearers get at least one QR scan.</p>
-          </div>
-          <div class="col-span-2" style="display:flex;justify-content:center;padding-top:1.5rem;">
-            <div class="pulse-dot"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SLIDE 9: IDEAS 5, 6 & 7 -->
-    <div class="slide">
-      <div class="content-slide">
-        <div class="section-label">PHASE 1 — CRACKHEAD IDEAS</div>
-        <h2 class="slide-title">Ideas 5, 6 & 7: Hyper-Local.</h2>
-        <div class="grid-3">
-          <div class="arsenal-card">
-            <div class="arsenal-title">5. Auto-Rickshaw Network</div>
-            <p class="arsenal-body">Partner with drivers near major college clusters. Laminated stickers on back: "India's next creator star is probably in this area. Scan here." Cheapest OOH media buy in history: 48,000 impressions/day for ₹100.</p>
-          </div>
-          <div class="arsenal-card">
-            <div class="arsenal-title">6. Chai Stall Alliance</div>
-            <p class="arsenal-body">Branded paper cups with QR codes. Every cup is an ad. Every sip is a touchpoint. Incentive for stall owner: ₹2 per scan. Students see it 3–5 times before they act. Last-mile distribution at zero cost.</p>
-          </div>
-          <div class="arsenal-card">
-            <div class="arsenal-title">7. Campus Talent Heads</div>
-            <p class="arsenal-body">Appoint one student per campus as official "Talent Head." They get a title, referral dashboard, and digital badge. Top head gets a paid internship. Impact: exponential — drive 30–100 registrations personally.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SLIDE 10: PHASE TWO -->
-    <div class="slide">
-      <div class="content-slide">
-        <div class="section-label">SECTION 05 — PHASE TWO</div>
-        <h2 class="slide-title">The Under-Monetized.</h2>
-        <div class="space-y">
-          <p style="color:var(--zinc-400);font-size:1.3rem;font-weight:300;font-style:italic;line-height:1.7;max-width:800px;">After students bring volume, the next unlock is local creators and micro-influencers — the 1k to 30k follower bracket. These are people who already have an audience but zero infrastructure.</p>
-          <div style="padding:2rem;border:1px solid var(--cyan);background:rgba(0,209,255,0.05);">
-            <p style="font-family:'Unbounded',sans-serif;font-size:clamp(1.2rem,2.5vw,1.8rem);font-weight:900;font-style:italic;text-transform:uppercase;line-height:1;letter-spacing:-0.03em;">"They are not too small. They are just underestimated. And they know it. That's the angle."</p>
-          </div>
-          <div class="grid-2">
-            <div class="info-chip"><div class="info-chip-label text-lime">The Insight</div><p class="info-chip-val">Micro-creators have the highest engagement rates. Brands get better ROI from 10k creators than from 500k ones — but nobody tells them that.</p></div>
-            <div class="info-chip"><div class="info-chip-label text-lime">The Pitch</div><p class="info-chip-val">"You have been undercharging for years because no one gave you the tools. CreatorVerse gives you a verified profile, real contracts, and a price benchmark."</p></div>
-            <div class="info-chip"><div class="info-chip-label text-lime">The Hook</div><p class="info-chip-val">Free onboarding, verified badge, pricing guidance. They get structure and dignity. Platform gets authentic inventory.</p></div>
-            <div class="info-chip"><div class="info-chip-label text-lime">The Channel</div><p class="info-chip-val">Direct DMs from Talent Heads, WhatsApp infiltration (genuine outreach), and targeted LinkedIn posts.</p></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SLIDE 11: MICRO ACTIVATIONS -->
-    <div class="slide">
-      <div class="content-slide">
-        <div class="section-label">SECTION 05 — PHASE TWO</div>
-        <h2 class="slide-title">Micro-Creator Activations.</h2>
-        <div class="grid-2" style="gap:2rem;">
-          <div class="card space-y">
-            <h4 style="font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:0.3em;font-style:italic;text-decoration:underline;text-underline-offset:8px;">The "What Are You Actually Worth?" Drop</h4>
-            <p style="color:var(--zinc-400);font-size:13px;font-style:italic;line-height:1.7;">Create a free, public tool — the CreatorVerse Rate Calculator. Input followers, platform, engagement. It tells market rate based on actual platform data. Standalone tool, no login required. Goes viral.</p>
-            <p style="font-family:'Space Mono',monospace;font-size:9px;color:var(--zinc-600);text-transform:uppercase;">Estimated viral coefficient: 3.5x</p>
-          </div>
-          <div class="card space-y">
-            <h4 style="font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:0.3em;font-style:italic;text-decoration:underline;text-underline-offset:8px;">Open Mic + QR Flyer Drops</h4>
-            <p style="color:var(--zinc-400);font-size:13px;font-style:italic;line-height:1.7;">Send 2–3 "spotters" to open mics and art shows. They watch, clap, and hand the performer a card: "You were the best one up there tonight. We're building something for creators who deserve better. Register here."</p>
-            <p style="font-family:'Space Mono',monospace;font-size:9px;color:var(--zinc-600);text-transform:uppercase;font-style:italic;">Scarcity + personal recognition = highest conversion.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SLIDE 12: PHASE THREE -->
-    <div class="slide">
-      <div class="content-slide">
-        <div class="section-label">SECTION 06 — PHASE THREE</div>
-        <h2 class="slide-title">High-Value Creators: Invite, Don't Spam.</h2>
-        <div class="space-y">
-          <p style="color:var(--zinc-400);font-size:1.3rem;font-weight:300;font-style:italic;line-height:1.7;">Targeting 50k to 500k followers with strong niche authority. They get 50 mass DMs a day. The approach has to be almost unnervingly personalized.</p>
-          <div class="grid-2" style="gap:2rem;">
-            <div class="card hover-cyan" style="transition:border-color 0.2s;">
-              <div style="font-family:'Space Mono',monospace;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.5em;color:var(--cyan);margin-bottom:1rem;">The Audit Drop</div>
-              <p style="color:var(--zinc-300);font-size:1rem;font-style:italic;margin-bottom:1rem;">"We did your audit. You're leaving ₹2–4L on the table annually."</p>
-              <p style="color:var(--zinc-500);font-size:11px;font-style:italic;line-height:1.7;">Research 50 creators deeply. Build a 1-page "Creator Audit" showing earnings potential vs current reality. This is not a pitch. This is a gift.</p>
-            </div>
-            <div class="card hover-lime" style="transition:border-color 0.2s;">
-              <div style="font-family:'Space Mono',monospace;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.5em;color:var(--lime);margin-bottom:1rem;">The Guarantee</div>
-              <p style="color:var(--zinc-300);font-size:1rem;font-style:italic;margin-bottom:1rem;">"One Creator, One Deal" introduction guarantee within 60 days.</p>
-              <p style="color:var(--zinc-500);font-size:11px;font-style:italic;line-height:1.7;">Risk reversal play for the first 20 high-value creators. Team does manual outreach if needed. Turns them into case studies that bring the next 200.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SLIDE 13: PHASE FOUR - BRANDS -->
-    <div class="slide">
-      <div class="content-slide">
-        <div class="section-label">SECTION 07 — PHASE FOUR</div>
-        <h2 class="slide-title">Brands Come Last. And That's a Power Move.</h2>
-        <div class="grid-2" style="gap:3rem;">
-          <div class="space-y">
-            <p style="color:var(--zinc-400);font-size:1.2rem;font-weight:300;font-style:italic;line-height:1.7;">Conventional logic says: get brands first. That logic built every failed marketplace. Brands show up when they see verified inventory that converts.</p>
-            <div style="padding:1.5rem 2rem;border-left:4px solid var(--cyan);background:var(--zinc-900);font-style:italic;color:#fff;font-weight:700;line-height:2.2;">
-              <p>"We have 500 verified creators ready to go."</p>
-              <p>"Your campaign can be live in 72 hours."</p>
-              <p>"Every payment is in escrow. Pay when you approve."</p>
-            </div>
-          </div>
-          <div class="space-y-sm">
-            <div class="mini-card"><span class="mini-card-k">D2C Startups</span><span class="mini-card-v">High marketing budgets, allergic to agencies. Ideal first customers.</span></div>
-            <div class="mini-card"><span class="mini-card-k">EdTech & FinTech</span><span class="mini-card-v">Strong ROI focus, trust-driven. Micro-creators convert better here.</span></div>
-            <div class="mini-card"><span class="mini-card-k">Local Businesses</span><span class="mini-card-v">Chai shops, boutiques — desperate to reach college audiences.</span></div>
-            <div class="mini-card"><span class="mini-card-k">Bootstrapped Founders</span><span class="mini-card-v">They understand the hustle. Speak their language. Move fast.</span></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SLIDE 14: BRAND ACQUISITION -->
-    <div class="slide">
-      <div class="content-slide">
-        <div class="section-label">SECTION 07 — PHASE FOUR</div>
-        <h2 class="slide-title">The Brand Acquisition Move.</h2>
-        <div class="grid-2" style="gap:3rem;align-items:center;">
-          <div class="space-y">
-            <p style="color:var(--zinc-400);font-size:1.1rem;font-weight:300;font-style:italic;line-height:1.7;">Find 5 D2C brands with "where did you find this creator?" comments. DM the founder directly with a screenshot of those comments and say:</p>
-            <div style="padding:2rem 2.5rem;background:var(--zinc-900);border-left:4px solid var(--lime);font-style:italic;color:var(--zinc-300);font-size:13px;font-weight:900;line-height:2.4;">
-              <p>"Your audience is already asking you to do more of this."</p>
-              <p>"We can give you 10 verified creators with real stats and a contract ready."</p>
-              <p>"First campaign: no platform fee. Just test us."</p>
-            </div>
-            <p style="font-family:'Space Mono',monospace;font-size:9px;color:var(--zinc-600);text-transform:uppercase;letter-spacing:0.2em;">Zero-risk trial lowers every objection. Target: 10 brand trials.</p>
-          </div>
-          <div style="display:flex;justify-content:center;">
-            <svg width="150" height="150" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SLIDE 15: ARSENAL INTRO -->
-    <div class="slide">
-      <div class="hero-slide">
-        <div class="hero-inner" style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:3rem;">
-          <div style="padding:3rem;border:1px solid rgba(255,255,255,0.1);position:relative;max-width:900px;">
-            <div style="position:absolute;top:-1rem;left:-1rem;width:2rem;height:2rem;background:#fff;color:#000;font-weight:900;display:flex;align-items:center;justify-content:center;font-size:11px;">!</div>
-            <p style="font-family:'Unbounded',sans-serif;font-size:clamp(1.5rem,4vw,3rem);font-weight:900;text-transform:uppercase;font-style:italic;line-height:0.9;letter-spacing:-0.04em;color:var(--zinc-300);">These are the ideas that a big agency would call "too risky." They are exactly the ones that break through.</p>
-          </div>
-          <p style="font-family:'Space Mono',monospace;font-size:9px;color:var(--zinc-600);text-transform:uppercase;letter-spacing:0.5em;">Inventory of Disruptive Marketing Assets</p>
-          <div class="section-label" style="margin:0;">SECTION 08 — THE CRACKHEAD ARSENAL</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SLIDE 16: ARSENAL 1 & 2 -->
-    <div class="slide">
-      <div class="content-slide">
-        <div class="section-label">THE CRACKHEAD ARSENAL</div>
-        <h2 class="slide-title">Billboards & Paper-Cuts.</h2>
-        <div class="grid-2" style="gap:2rem;">
-          <div class="card space-y">
-            <div style="font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:0.3em;border-bottom:1px solid var(--zinc-700);padding-bottom:0.75rem;font-style:italic;">1. The Fake Billboard</div>
-            <p style="color:var(--zinc-400);font-size:12px;font-style:italic;line-height:1.7;">"HIRING: India's next 1,000 verified content creators. Talent required." Looks like a job ad. Shared on LinkedIn/Twitter by excited students. Cost: ₹8,000–₹25,000. Earned media value: 10x.</p>
-          </div>
-          <div class="card space-y">
-            <div style="font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:0.3em;border-bottom:1px solid var(--zinc-700);padding-bottom:0.75rem;font-style:italic;">2. Paper-Cut Face Kit</div>
-            <p style="color:var(--zinc-400);font-size:12px;font-style:italic;line-height:1.7;">Flat-pack sheet that assembles into a 3D face sculpture. "Your face is the missing piece." Shared as a desk accessory. Instagram-worthy by design. Cost per kit: ₹40–₹60. Shareability: extreme.</p>
-          </div>
-          <div class="col-span-2" style="padding:1.25rem 1.75rem;border-left:4px solid var(--cyan);background:rgba(24,24,27,0.5);">
-            <p style="font-family:'Space Mono',monospace;font-size:9px;color:var(--zinc-500);text-transform:uppercase;">"Luck shouldn't decide fame. Structure should."</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SLIDE 17: ARSENAL 3, 4, 5 -->
-    <div class="slide">
-      <div class="content-slide">
-        <div class="section-label">THE CRACKHEAD ARSENAL</div>
-        <h2 class="slide-title">Wrapped, Anthem & Pitch.</h2>
-        <div class="grid-3">
-          <div class="arsenal-card">
-            <div class="arsenal-title">3. Spotify-Style Wrapped</div>
-            <p class="arsenal-body">"Your Year in Talent" cards for every creator. Branded for IG stories. Near 100% shareability among motivated creators.</p>
-          </div>
-          <div class="arsenal-card">
-            <div class="arsenal-title">4. Anti-Hustle Anthem</div>
-            <p class="arsenal-body">Commission an original rap "Luck Shouldn't Decide Fame." Released as a brand anthem. Content that happens to recruit.</p>
-          </div>
-          <div class="arsenal-card">
-            <div class="arsenal-title">5. LinkedIn Reverse Pitch</div>
-            <p class="arsenal-body">Brutally honest thread: "We need 500 creators. Here is what we offer and what we cannot offer yet." Radical transparency.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SLIDE 18: THE NUMBERS -->
-    <div class="slide">
-      <div class="content-slide">
-        <div class="section-label">SECTION 09 — THE NUMBERS</div>
-        <h2 class="slide-title">What Success Looks Like.</h2>
-        <p style="color:var(--zinc-400);font-size:1.2rem;font-weight:300;font-style:italic;line-height:1.7;margin-bottom:1.5rem;">Every idea in this document is accountable to a number. Projection for the first 90 days.</p>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Metric</th><th>Target (90 Days)</th><th>Primary Driver</th></tr></thead>
-            <tbody>
-              <tr><td class="td-white">Campus Registrations</td><td class="td-cyan">500–2,000</td><td class="td-val">Low cost, high competition FOMO</td></tr>
-              <tr><td class="td-white">Micro-Creator Onboarding</td><td class="td-cyan">200–500</td><td class="td-val">Rate Calculator virality</td></tr>
-              <tr><td class="td-white">High-Value Creator Invites Sent</td><td class="td-cyan">50</td><td class="td-val">Personalized audit drops</td></tr>
-              <tr><td class="td-white">High-Value Creators Onboarded</td><td class="td-cyan">10–20</td><td class="td-val">15–20% conversion</td></tr>
-              <tr><td class="td-white">Brand Trial Partnerships</td><td class="td-cyan">5–10</td><td class="td-val">Founder DM strategy</td></tr>
-              <tr><td class="td-white">UGC Talent Drops</td><td class="td-cyan">500+</td><td class="td-val">#FindTheFaces challenge</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- SLIDE 19: UNIT ECONOMICS -->
-    <div class="slide">
-      <div class="content-slide">
-        <div class="section-label">SECTION 09 — THE NUMBERS</div>
-        <h2 class="slide-title">Unit Economics Logic.</h2>
-        <div class="grid-2" style="gap:3rem;align-items:center;">
-          <div class="card space-y">
-            <div class="quote-block" style="font-size:1.1rem;">"If a single mid-tier creator brings 3 brand deals at ₹15,000 average, that is ₹45,000 in GMV per creator per quarter. At a 15% platform take: ₹6,750 per creator per quarter."</div>
-            <div class="unit-box">
-              <p class="unit-box-text">At 200 active mid-tier creators: ₹13.5L quarterly GMV contribution. Platform take: ₹2L+/quarter.</p>
-            </div>
-          </div>
-          <div class="space-y">
-            <div style="padding:1.75rem;border:1px solid var(--zinc-800);background:rgba(226,255,0,0.03);display:flex;align-items:flex-start;gap:1.25rem;">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--lime)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-              <p style="color:var(--zinc-300);font-size:1rem;font-weight:700;text-transform:uppercase;font-style:italic;line-height:1.5;letter-spacing:0.02em;">"The real value: Data moat. Every deal done on CreatorVerse makes the algorithm smarter, the matching better, and the defensibility higher."</p>
-            </div>
-            <div style="background:var(--zinc-950);padding:3rem;border:1px solid var(--zinc-900);display:flex;justify-content:center;align-items:center;">
-              <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="var(--zinc-800)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SLIDE 20: CLOSING -->
-    <div class="slide">
-      <div class="closing-slide">
-        <h2 class="closing-h2">"Luck shouldn't decide fame. <span style="color:var(--lime);">We built the system</span> that makes sure it doesn't."</h2>
-        <div class="closing-body">
-          <p style="font-family:'Space Mono',monospace;font-size:9px;color:#fff;font-weight:700;text-transform:uppercase;letter-spacing:0.5em;margin-bottom:1.5rem;text-decoration:underline;text-underline-offset:6px;font-style:normal;">CLOSING THOUGHT</p>
-          <p style="margin-bottom:1rem;">The biggest creators in India today were discovered by accident. An algorithm noticed them. A friend shared their video. A brand stumbled across their page. None of it was structured. None of it was fair. None of it scaled.</p>
-          <p>CreatorVerse is the infrastructure that removes luck from the equation. And this playbook is how we make sure enough people know it exists — loudly, memorably, and at a cost that makes the ROI case impossible to argue with.</p>
-        </div>
-        <div style="margin-top:3.5rem;display:flex;flex-direction:column;align-items:center;gap:1rem;">
-          <div style="width:5rem;height:1px;background:var(--zinc-800);"></div>
-          <p style="font-family:'Space Mono',monospace;font-size:9px;color:var(--zinc-600);text-transform:uppercase;letter-spacing:0.6em;font-weight:700;font-style:italic;">Diya Nathwani // Playbook // 2024</p>
-        </div>
-      </div>
-    </div>
-
-  </main>
-
-  <!-- FOOTER NAV -->
-  <div class="footer-nav">
-    <div class="footer-inner">
-      <button class="nav-btn" id="prev-btn" onclick="prevSlide()">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
-        Back
-      </button>
-      <span class="nav-center">The Operating System for Creators</span>
-      <button class="nav-btn" id="next-btn" onclick="nextSlide()">
-        Next
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-      </button>
     </div>
   </div>
 </div>
 
+<!-- ===== SLIDE 02: THE PROBLEM ===== -->
+<div class="slide">
+  <div class="content-wrap">
+    <div class="section-tag">SECTION 01 — THE PROBLEM</div>
+    <h2 class="slide-h2">India Has 80M+ Creators.<br><span>Most Are Invisible.</span></h2>
+    <div class="g2 gap2">
+      <div class="flex-c">
+        <p style="font-size:clamp(1rem,1.8vw,1.5rem);font-weight:500;font-style:italic;line-height:1.4;color:#fff">The creator economy is not broken because talent doesn't exist. It's broken because the infrastructure never got built properly.</p>
+        <p class="body-md">Brands are sitting on budgets with no idea where to spend them. Creators produce content every day with no reliable path to income. Deals happen over DMs, WhatsApp chains, hastily typed emails — no structure, no trust, no transparency.</p>
+        <!-- Visual: broken pipe illustration -->
+        <div style="background:var(--z950);border:1px solid var(--z800);padding:1.25rem;margin-top:.5rem">
+          <div style="display:flex;align-items:center;gap:1rem;margin-bottom:.75rem">
+            <div style="flex:1;height:6px;background:linear-gradient(90deg,#4ade80,#4ade80 40%,transparent 40%);border-radius:3px;position:relative">
+              <div style="position:absolute;right:30%;top:-6px;font-size:14px">💸</div>
+            </div>
+            <div style="width:8px;height:8px;background:#ef4444;border-radius:50%;flex-shrink:0"></div>
+            <div style="flex:.6;height:6px;background:linear-gradient(90deg,transparent,#ef4444 60%);border-radius:3px"></div>
+          </div>
+          <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--z600);text-transform:uppercase;letter-spacing:.3em">Creator → [broken pipe] → Brand</div>
+        </div>
+      </div>
+      <div class="flex-c">
+        <div class="card card-cyan">
+          <div class="label label-cyan">The core insight</div>
+          <p class="qblock qblock-cyan" style="padding:.75rem 0 0 1rem;border-width:3px;">"The problem is not a lack of talent. The problem is a broken infrastructure."</p>
+        </div>
+        <div class="card-sm">💡 <strong style="color:#fff">Creator Side:</strong> Unclear pricing, no contracts, payment delays, no visibility into brand deals.</div>
+        <div class="card-sm">📊 <strong style="color:#fff">Brand Side:</strong> Fake followers, no ROI data, scattered communication, no way to verify authenticity.</div>
+        <div class="card-sm">🎲 <strong style="color:#fff">The system:</strong> Deals close on gut feel, not data. Discovery is accidental, not structured.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 03: THE GAP ===== -->
+<div class="slide">
+  <div class="content-wrap">
+    <div class="section-tag">SECTION 01 — THE PROBLEM</div>
+    <h2 class="slide-h2">The Gap <span>CreatorVerse Fills.</span></h2>
+    <div class="flex-c">
+      <div class="white-panel">
+        <h3>"This is the exact gap CreatorVerse is built to fill."</h3>
+        <p style="font-size:.9rem;font-weight:700;text-transform:uppercase;line-height:1.6">Not just another marketplace — a structured, end-to-end OS for creator-brand collaboration. From discovery to deal to payment, in one place.</p>
+      </div>
+      <!-- Visual: flow arrows -->
+      <div class="arrow-row" style="flex-wrap:wrap;gap:.25rem">
+        <div class="arrow-box" style="background:rgba(226,255,0,.07);border-color:rgba(226,255,0,.3);color:var(--lime)">Creator signs up</div>
+        <div class="arrow-sep">→</div>
+        <div class="arrow-box">Profile verified</div>
+        <div class="arrow-sep">→</div>
+        <div class="arrow-box">Brand discovers</div>
+        <div class="arrow-sep">→</div>
+        <div class="arrow-box">Contract auto-drafted</div>
+        <div class="arrow-sep">→</div>
+        <div class="arrow-box" style="background:rgba(0,209,255,.07);border-color:rgba(0,209,255,.3);color:var(--cyan)">Escrow pays out</div>
+      </div>
+      <!-- Three pillar icons -->
+      <div class="g3">
+        <div class="card flex-center" style="flex-direction:column;gap:.75rem;text-align:center;padding:2rem">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <span style="font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.3em;font-family:'Space Mono',monospace">Discovery</span>
+        </div>
+        <div class="card flex-center" style="flex-direction:column;gap:.75rem;text-align:center;padding:2rem">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--lime)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><path d="m9 15 2 2 4-4"/></svg>
+          <span style="font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.3em;font-family:'Space Mono',monospace">Deal Flow</span>
+        </div>
+        <div class="card flex-center" style="flex-direction:column;gap:.75rem;text-align:center;padding:2rem">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <span style="font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.3em;font-family:'Space Mono',monospace">Secure Payment</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 04: PLATFORM FEATURES ===== -->
+<div class="slide">
+  <div class="content-wrap">
+    <div class="section-tag">SECTION 02 — THE PLATFORM</div>
+    <h2 class="slide-h2">What is <span>CreatorVerse?</span></h2>
+    <p class="body-lg" style="margin-bottom:1.25rem;max-width:700px">Replace the chaos of DMs, Excel sheets, and verbal agreements with a clean, transparent workflow that works for both sides.</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Feature</th><th>What It Solves</th></tr></thead>
+        <tbody>
+          <tr><td class="td-lime">Smart Discovery</td><td class="td-val">AI-powered search — niche, platform, audience size, engagement rate. No guesswork, no fake follower anxiety.</td></tr>
+          <tr><td class="td-lime">Verified Profiles</td><td class="td-val">API-connected data from Instagram and YouTube. Live stats, not screenshots.</td></tr>
+          <tr><td class="td-lime">Auto-Contracts</td><td class="td-val">Deliverables, timelines, and revision rounds locked before work begins. Legal clarity in under 60 seconds.</td></tr>
+          <tr><td class="td-lime">Smart Escrow</td><td class="td-val">Funds locked at contract sign. Auto-released on approval. Creators get paid. Brands get quality.</td></tr>
+          <tr><td class="td-lime">Unified Workspace</td><td class="td-val">Briefs, approvals, communication, campaign tracking — all in one dashboard. No more 47-tab chaos.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 05: SMART ESCROW VISUAL ===== -->
+<div class="slide">
+  <div class="content-wrap">
+    <div class="section-tag">SECTION 02 — THE PLATFORM</div>
+    <h2 class="slide-h2">Smart Escrow:<br><span>How Money Moves.</span></h2>
+    <div class="g2 gap2" style="align-items:center">
+      <div class="flex-c">
+        <p class="body-md" style="margin-bottom:1rem">Every payment locked at contract sign. Auto-released when the deliverable is approved. No trust required — the system is the trust.</p>
+        <!-- Escrow flow visual -->
+        <div class="flex-c" style="gap:.5rem">
+          <div style="display:flex;align-items:stretch;gap:.25rem">
+            <div class="flow-box" style="flex:1"><div class="step-l">1. Brand</div><div class="step-v">Pays into escrow</div></div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-box" style="flex:1;background:rgba(226,255,0,.05);border-color:rgba(226,255,0,.3)"><div class="step-l">2. Locked</div><div class="step-v" style="color:var(--lime)">CreatorVerse holds</div></div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-box" style="flex:1"><div class="step-l">3. Creator</div><div class="step-v">Delivers content</div></div>
+          </div>
+          <div style="display:flex;align-items:stretch;gap:.25rem">
+            <div class="flow-box" style="flex:1"><div class="step-l">6. Done</div><div class="step-v" style="color:var(--cyan)">Case study created</div></div>
+            <div class="flow-arrow">←</div>
+            <div class="flow-box" style="flex:1;background:rgba(0,209,255,.05);border-color:rgba(0,209,255,.3)"><div class="step-l">5. Released</div><div class="step-v" style="color:var(--cyan)">Creator gets paid</div></div>
+            <div class="flow-arrow">←</div>
+            <div class="flow-box" style="flex:1"><div class="step-l">4. Brand</div><div class="step-v">Approves</div></div>
+          </div>
+        </div>
+        <div style="background:var(--z950);border:1px solid var(--z800);padding:1rem;margin-top:.5rem">
+          <p class="body-sm italic">"Creators get paid. Brands get quality. Both sleep at night." — No DMs. No chasing invoices. No trust required.</p>
+        </div>
+      </div>
+      <!-- Phone mockup with escrow UI -->
+      <div class="flex-center">
+        <div class="phone-frame">
+          <div class="phone-notch"></div>
+          <div class="phone-screen" style="padding:.75rem">
+            <div style="font-size:9px;font-weight:900;text-transform:uppercase;color:var(--lime);letter-spacing:.2em;margin-bottom:.5rem">Payment Status</div>
+            <div style="background:var(--z900);border-radius:8px;padding:.6rem;margin-bottom:.4rem">
+              <div style="font-size:9px;color:var(--z500);margin-bottom:.2rem">Campaign</div>
+              <div style="font-size:11px;font-weight:700">Chai Republic × @priya.creates</div>
+              <div style="font-size:9px;color:var(--z500);margin-top:.25rem">3 Reels · ₹18,000</div>
+            </div>
+            <div style="background:rgba(226,255,0,.1);border:1px solid rgba(226,255,0,.3);border-radius:6px;padding:.5rem;text-align:center;margin-bottom:.4rem">
+              <div style="font-size:8px;color:var(--lime);text-transform:uppercase;font-weight:700">🔒 In Escrow</div>
+              <div style="font-family:'Unbounded',sans-serif;font-size:1rem;font-weight:900;color:var(--lime)">₹18,000</div>
+            </div>
+            <div style="display:flex;gap:.25rem">
+              <div style="flex:1;background:var(--z900);border-radius:4px;padding:.4rem;text-align:center;font-size:8px;color:var(--z500)">✓ Contract<br><span style="color:#4ade80">Signed</span></div>
+              <div style="flex:1;background:var(--z900);border-radius:4px;padding:.4rem;text-align:center;font-size:8px;color:var(--z500)">📤 Delivery<br><span style="color:var(--lime)">Pending</span></div>
+              <div style="flex:1;background:var(--z900);border-radius:4px;padding:.4rem;text-align:center;font-size:8px;color:var(--z500)">💰 Payout<br><span style="color:var(--z700)">Locked</span></div>
+            </div>
+          </div>
+          <div class="phone-home"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 06: GTM STRATEGY ===== -->
+<div class="slide">
+  <div class="content-wrap">
+    <div class="section-tag">SECTION 03 — GTM STRATEGY</div>
+    <h2 class="slide-h2">The Growth <span>Sequence.</span></h2>
+    <p class="body-md" style="max-width:700px;margin-bottom:1.25rem">Most platforms try to onboard everyone at once and wonder why neither side shows up. CreatorVerse grows in sequence — each step builds credibility for the next.</p>
+    <div class="flex-c" style="gap:.35rem">
+      <div class="step-row"><span class="step-num">1</span><p class="step-txt">Student Creators — The loudest, most competitive, most FOMO-driven segment. They come in fast.</p></div>
+      <div class="step-row"><span class="step-num">2</span><p class="step-txt">Local Creators & Micro-Influencers — Under-monetized, hungry for structure, easy early wins.</p></div>
+      <div class="step-row"><span class="step-num">3</span><p class="step-txt">Mid-Tier Creators (10k–200k) — Come once they see real deals happening on the platform.</p></div>
+      <div class="step-row"><span class="step-num">4</span><p class="step-txt">High-Value Creators (selective) — Onboarded with white-glove attention. Not spammed, invited.</p></div>
+      <div class="step-row"><span class="step-num">5</span><p class="step-txt">Brands — Arrive when there's a curated, verified creator pool waiting for them.</p></div>
+    </div>
+    <p style="font-family:'Space Mono',monospace;font-size:9px;color:var(--z600);text-transform:uppercase;letter-spacing:.5em;text-align:center;margin-top:1.25rem">Supply-side dominance first → then monetization.</p>
+  </div>
+</div>
+
+<!-- ===== SLIDE 07: FIND THE FACES HERO ===== -->
+<div class="slide">
+  <div class="content-wrap">
+    <div class="section-tag">SECTION 04 — PHASE ONE</div>
+    <h2 class="slide-h2">FIND <span>THE FACES</span></h2>
+    <div class="g2 gap2">
+      <div class="flex-c">
+        <p style="font-size:clamp(1rem,1.8vw,1.4rem);font-weight:900;text-transform:uppercase;font-style:italic;line-height:1;letter-spacing:-.03em;color:#fff">A Nationwide Campus Creator Hunt.<br><span style="color:var(--cyan)">Powered by CreatorVerse.</span></p>
+        <p class="body-md">India's campuses produce more undiscovered talent per square kilometre than anywhere else. Dancers never seen beyond their college auditorium. Comedians performing for 50 friends. Musicians who sound like albums but look like attendance registers.</p>
+        <div style="background:var(--lime);padding:1.25rem;color:#000;font-family:'Unbounded',sans-serif;font-size:clamp(.85rem,1.5vw,1.2rem);font-weight:900;text-transform:uppercase;font-style:italic;line-height:1.2">"India is looking for its next 1,000 faces — and we're starting at your college."</div>
+      </div>
+      <div class="flex-c">
+        <div class="card card-cyan"><div class="label label-cyan">Behavioral Shift</div><p class="body-sm italic">Private talent → Public discovery → Social competition → Platform registration.</p></div>
+        <div class="card"><div class="label label-lime">Why Students</div><p class="body-sm italic">They respond to identity, FOMO, peer competition, and visible recognition — not feature lists.</p></div>
+        <div class="card"><div class="label" style="color:var(--z400)">ROI Logic</div><p class="body-sm italic">Cost per creator: ₹5–₹30 via campus vs ₹200–₹800 via paid ads. Zero comparison.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 08: CAMPUS LEADERBOARD VISUAL ===== -->
+<div class="slide">
+  <div class="content-wrap">
+    <div class="section-tag">PHASE 1 — IDEA 1</div>
+    <h2 class="slide-h2">The Campus <span>Leaderboard.</span><br><span class="lime" style="font-size:60%">FOMO as Infrastructure.</span></h2>
+    <div class="g2 gap2" style="align-items:start">
+      <div class="flex-c">
+        <p class="body-md">Launch a live digital scoreboard: colleges ranked by number of registered creators. Update in real time. Broadcast on the CreatorVerse Instagram story every day.</p>
+        <p class="body-sm italic" style="margin-top:.5rem">The moment one college sees another pulling ahead — the group chats go insane. Campus pride does the distribution. Zero paid ads.</p>
+        <div style="display:flex;gap:1rem;margin-top:.75rem">
+          <div class="card" style="flex:1;text-align:center;padding:1.25rem">
+            <div class="big-stat cyan">200–800</div>
+            <div style="font-size:9px;text-transform:uppercase;letter-spacing:.2em;color:var(--z500);margin-top:.25rem;font-family:'Space Mono',monospace">organic shares/college<br>in 48 hrs</div>
+          </div>
+          <div class="card" style="flex:1;text-align:center;padding:1.25rem">
+            <div class="big-stat lime">₹0</div>
+            <div style="font-size:9px;text-transform:uppercase;letter-spacing:.2em;color:var(--z500);margin-top:.25rem;font-family:'Space Mono',monospace">paid distribution cost</div>
+          </div>
+        </div>
+        <!-- IG Story mock -->
+        <div style="background:#0a0a0a;border:1px solid #222;border-radius:12px;overflow:hidden;padding:.75rem">
+          <div style="font-size:9px;color:var(--z600);font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:.2em;margin-bottom:.5rem">@creatorverse · Instagram Story</div>
+          <div style="background:linear-gradient(135deg,#1a0533,#002244);border-radius:8px;padding:1rem">
+            <div style="font-family:'Unbounded',sans-serif;font-size:.7rem;font-weight:900;text-transform:uppercase;color:var(--lime);letter-spacing:.1em;margin-bottom:.5rem">🏆 CAMPUS LEADERBOARD — LIVE</div>
+            <div style="font-size:9px;color:var(--z400);margin-bottom:.5rem;font-style:italic">Updated every 6 hours · Join now →</div>
+            <div class="lb-row" style="border-radius:4px 4px 0 0"><span class="lb-rank gold">1</span><div class="lb-college" style="color:#fff">BITS Pilani<div class="lb-bar"><div class="lb-bar-fill" style="width:95%"></div></div></div><span class="lb-count">412</span></div>
+            <div class="lb-row"><span class="lb-rank silver">2</span><div class="lb-college">IIT Bombay<div class="lb-bar"><div class="lb-bar-fill" style="width:78%"></div></div></div><span class="lb-count">321</span></div>
+            <div class="lb-row"><span class="lb-rank bronze">3</span><div class="lb-college">Symbiosis Pune<div class="lb-bar"><div class="lb-bar-fill" style="width:64%"></div></div></div><span class="lb-count">263</span></div>
+            <div class="lb-row"><span class="lb-rank">4</span><div class="lb-college">Manipal Institute<div class="lb-bar"><div class="lb-bar-fill" style="width:51%"></div></div></div><span class="lb-count">210</span></div>
+            <div style="text-align:center;margin-top:.5rem;font-size:9px;color:var(--cyan);font-weight:700;cursor:pointer">Your college isn't here yet. Register now →</div>
+          </div>
+        </div>
+      </div>
+      <!-- Phone with IG notification -->
+      <div class="flex-c" style="align-items:center;gap:1rem">
+        <div class="phone-frame" style="width:200px">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <!-- IG notification -->
+            <div style="background:#000;padding:.5rem;border-bottom:1px solid #1a1a1a">
+              <div style="display:flex;align-items:center;gap:.4rem;padding:.3rem">
+                <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);flex-shrink:0"></div>
+                <div style="font-size:9px;line-height:1.4"><strong>creatorverse</strong> started following this story</div>
+              </div>
+            </div>
+            <!-- IG story frame -->
+            <div style="background:linear-gradient(135deg,#1a0533,#002244);padding:.75rem;min-height:180px;position:relative">
+              <div style="position:absolute;top:.4rem;left:.4rem;right:.4rem;height:3px;background:rgba(255,255,255,.2);border-radius:2px">
+                <div style="height:100%;width:60%;background:#fff;border-radius:2px"></div>
+              </div>
+              <div style="margin-top:.75rem">
+                <div style="font-family:'Unbounded',sans-serif;font-size:.6rem;font-weight:900;color:var(--lime);margin-bottom:.25rem">CAMPUS LEADERBOARD</div>
+                <div style="font-size:.55rem;color:var(--z300);margin-bottom:.5rem;font-style:italic">Does your college rank?</div>
+                <div style="background:rgba(255,255,255,.08);border-radius:6px;padding:.4rem">
+                  <div style="font-size:.55rem;color:#FFD700;font-weight:700">🥇 BITS Pilani — 412</div>
+                  <div style="font-size:.55rem;color:#C0C0C0">🥈 IIT Bombay — 321</div>
+                  <div style="font-size:.55rem;color:#CD7F32">🥉 Symbiosis — 263</div>
+                </div>
+                <div style="margin-top:.5rem;background:var(--lime);border-radius:20px;padding:.25rem .5rem;font-size:.55rem;font-weight:900;color:#000;text-align:center;display:inline-block">REGISTER YOUR COLLEGE →</div>
+              </div>
+            </div>
+            <div style="background:#000;padding:.5rem;display:flex;gap:.5rem;justify-content:center">
+              <div style="font-size:8px;color:var(--z500)">💬 Send message</div>
+            </div>
+          </div>
+          <div class="phone-home"></div>
+        </div>
+        <div class="card" style="max-width:200px;padding:1rem">
+          <p class="body-sm italic">"The moment their WhatsApp group chat blows up, you've won."</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 09: MISSING POSTER ===== -->
+<div class="slide">
+  <div class="content-wrap">
+    <div class="section-tag">PHASE 1 — IDEA 2</div>
+    <h2 class="slide-h2">The Face Poster <span>Drops.</span><br><span class="lime" style="font-size:60%">Guerrilla. Make it Eerie.</span></h2>
+    <div class="g2 gap2" style="align-items:start">
+      <div class="flex-c">
+        <p class="body-md">Two weeks before launch, paste black-and-white "MISSING" style posters across campuses. No brand explanation. Just intrigue. The QR does the talking.</p>
+        <div class="flex-c" style="gap:.5rem;margin-top:.5rem">
+          <div class="card-sm">📍 Print shops, canteen walls, hostel corridors, toilet doors — highest dwell time.</div>
+          <div class="card-sm">💰 Cost per college: ₹300–₹600 in print. Expected scans: 150–400 per campus.</div>
+          <div class="card-sm">❓ No brand explanation on the poster. Just intrigue. The QR does the talking.</div>
+        </div>
+        <!-- WhatsApp thread showing viral spread -->
+        <div style="background:#0a0a0a;border:1px solid #1a1a1a;border-radius:12px;overflow:hidden;margin-top:.75rem">
+          <div style="background:#075e54;padding:.5rem .75rem;font-size:9px;font-weight:700;color:#fff;display:flex;align-items:center;gap:.4rem">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884"/></svg>
+            BITS Pilani Creatives 🎨
+          </div>
+          <div style="background:#e5ddd5;padding:.5rem">
+            <div style="background:#fff;border-radius:4px 8px 8px 4px;padding:.4rem .6rem;max-width:80%;margin-bottom:.3rem;font-size:9px;line-height:1.5">
+              bro there's this super weird poster on the canteen wall 😭 "THIS CAMPUS HAS UNDISCOVERED TALENT" and it's in missing person style??
+            </div>
+            <div style="background:#fff;border-radius:4px 8px 8px 4px;padding:.4rem .6rem;max-width:75%;margin-bottom:.3rem;font-size:9px;line-height:1.5">
+              WHAT 😭 send photo
+            </div>
+            <div style="background:#dcf8c6;border-radius:8px 4px 4px 8px;padding:.4rem .6rem;max-width:80%;margin-left:auto;margin-bottom:.3rem;font-size:9px;line-height:1.5">
+              scanned the qr. it's a creator platform called creatorverse. kinda genius ngl
+            </div>
+            <div style="background:#fff;border-radius:4px 8px 8px 4px;padding:.4rem .6rem;max-width:70%;font-size:9px;line-height:1.5">
+              bro i'm registering rn 🔥
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Poster illustration -->
+      <div class="flex-c" style="align-items:center;gap:1.25rem">
+        <div class="poster" style="max-width:260px">
+          <div class="poster-title">MISSING</div>
+          <div class="poster-body">
+            THIS CAMPUS HAS<br>UNDISCOVERED TALENT.<br><br>
+            WE'RE LOOKING<br>FOR THEM.
+          </div>
+          <div class="poster-footer">
+            <div>
+              <div class="poster-qr">
+                <svg width="34" height="34" viewBox="0 0 34 34"><rect x="2" y="2" width="12" height="12" fill="#fff"/><rect x="3" y="3" width="10" height="10" fill="#000"/><rect x="5" y="5" width="6" height="6" fill="#fff"/><rect x="20" y="2" width="12" height="12" fill="#fff"/><rect x="21" y="3" width="10" height="10" fill="#000"/><rect x="23" y="5" width="6" height="6" fill="#fff"/><rect x="2" y="20" width="12" height="12" fill="#fff"/><rect x="3" y="21" width="10" height="10" fill="#000"/><rect x="5" y="23" width="6" height="6" fill="#fff"/><rect x="16" y="16" width="4" height="4" fill="#000"/><rect x="22" y="16" width="4" height="4" fill="#000"/><rect x="16" y="22" width="6" height="6" fill="#000"/><rect x="24" y="24" width="8" height="8" fill="#000"/></svg>
+              </div>
+              <div style="font-size:.5rem;font-weight:900;text-transform:uppercase;letter-spacing:.1em;margin-top:.3rem">Scan. Register. Be Found.</div>
+            </div>
+            <div class="poster-brand">Creator<br>Verse</div>
+          </div>
+        </div>
+        <div class="card" style="max-width:260px;padding:1rem;font-size:10px;font-style:italic;color:var(--z400)">
+          Hostel noticeboards, toilet doors, canteen walls. Cost per campus: <strong style="color:var(--lime)">₹300–₹600</strong>. Expected scans: <strong style="color:var(--cyan)">150–400</strong>.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 10: 15-SECOND TALENT DROP + UGC ===== -->
+<div class="slide">
+  <div class="content-wrap">
+    <div class="section-tag">PHASE 1 — IDEA 3</div>
+    <h2 class="slide-h2">15-Second <span>Talent Drop.</span><br><span class="lime" style="font-size:55%">UGC That Distributes Itself.</span></h2>
+    <div class="g2 gap2">
+      <div class="flex-c">
+        <p class="body-md">Post a 15-second clip of your talent with #FindTheFaces. Best ones featured as "Spotted Faces" on the CreatorVerse page. Not a branded hashtag campaign — a talent hunt that students are proud to be part of.</p>
+        <div class="flex-c" style="gap:.5rem;margin-top:.5rem">
+          <div class="card-sm">🎯 Each UGC post is a distribution event — their followers see it, curiosity spreads.</div>
+          <div class="card-sm">🎯 Target: <strong style="color:var(--cyan)">500+ organic UGC posts</strong> in Week 1.</div>
+        </div>
+        <!-- UGC stats panel -->
+        <div class="g2" style="gap:.75rem;margin-top:.5rem">
+          <div class="card" style="text-align:center;padding:1rem">
+            <div class="big-stat cyan" style="font-size:2rem">500+</div>
+            <div style="font-size:8px;text-transform:uppercase;color:var(--z500);letter-spacing:.2em;font-family:'Space Mono',monospace;margin-top:.2rem">UGC posts · Week 1</div>
+          </div>
+          <div class="card" style="text-align:center;padding:1rem">
+            <div class="big-stat lime" style="font-size:2rem">3.5x</div>
+            <div style="font-size:8px;text-transform:uppercase;color:var(--z500);letter-spacing:.2em;font-family:'Space Mono',monospace;margin-top:.2rem">avg viral coefficient</div>
+          </div>
+        </div>
+      </div>
+      <!-- UGC posts grid -->
+      <div class="flex-c" style="gap:.75rem">
+        <!-- Reel 1 -->
+        <div class="reel-card" style="border-radius:12px;background:linear-gradient(180deg,#1a0a2e,#0a1a2e)">
+          <div class="reel-bg"></div>
+          <!-- Play icon watermark -->
+          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-80%)">
+            <div style="width:44px;height:44px;background:rgba(255,255,255,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px)">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            </div>
+          </div>
+          <div style="position:absolute;top:.75rem;left:.75rem;background:var(--lime);color:#000;font-size:8px;font-weight:900;padding:.2rem .4rem;border-radius:2px;text-transform:uppercase">🎵 Dance</div>
+          <div class="reel-info">
+            <div class="reel-user">
+              <div class="reel-ava" style="background:linear-gradient(135deg,#f09433,#e6683c)"></div>
+              <span class="reel-name">@aisha.moves</span>
+              <span class="reel-btn">Follow</span>
+            </div>
+            <div class="reel-caption">my 2am practice finally got recognized 😭🔥 <span class="reel-tags">#FindTheFaces #CreatorVerse</span></div>
+          </div>
+          <div class="reel-sidebar">
+            <div class="reel-action"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span class="reel-action-n">14.2k</span></div>
+            <div class="reel-action"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span class="reel-action-n">892</span></div>
+            <div class="reel-action"><svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg><span class="reel-action-n">3.1k</span></div>
+          </div>
+        </div>
+        <!-- Reel 2 -->
+        <div class="reel-card" style="border-radius:12px;background:linear-gradient(180deg,#0a2e1a,#1a1a0a)">
+          <div class="reel-bg"></div>
+          <div style="position:absolute;top:.75rem;left:.75rem;background:var(--cyan);color:#000;font-size:8px;font-weight:900;padding:.2rem .4rem;border-radius:2px;text-transform:uppercase">🎤 Comedy</div>
+          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-80%)">
+            <div style="width:44px;height:44px;background:rgba(255,255,255,.2);border-radius:50%;display:flex;align-items:center;justify-content:center">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            </div>
+          </div>
+          <div class="reel-info">
+            <div class="reel-user">
+              <div class="reel-ava" style="background:linear-gradient(135deg,#0077b5,#00a0dc)"></div>
+              <span class="reel-name">@rohan.comedy</span>
+              <span class="reel-btn">Follow</span>
+            </div>
+            <div class="reel-caption">college auditorium → this app → brand deal? let's see 🤷 <span class="reel-tags">#FindTheFaces</span></div>
+          </div>
+          <div class="reel-sidebar">
+            <div class="reel-action"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span class="reel-action-n">8.7k</span></div>
+            <div class="reel-action"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span class="reel-action-n">441</span></div>
+            <div class="reel-action"><svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg><span class="reel-action-n">1.8k</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 11: HYPER LOCAL — AUTO + CHAI ===== -->
+<div class="slide">
+  <div class="content-wrap">
+    <div class="section-tag">PHASE 1 — IDEAS 5 & 6</div>
+    <h2 class="slide-h2">Hyper-Local <span>Zero Budget.</span></h2>
+    <div class="g2 gap2">
+      <div class="flex-c gap2">
+        <!-- Auto-rickshaw -->
+        <div class="card" style="padding:1.5rem">
+          <div class="label label-lime" style="margin-bottom:.75rem">5. Auto-Rickshaw Media Network</div>
+          <p class="body-sm italic" style="margin-bottom:1rem">Partner with 5–10 drivers near major college clusters. Laminated sticker on the back of each auto. 6 cities × 10 autos = 60 moving billboards for ₹3,000/month.</p>
+          <div class="auto-sticker">
+            <div class="auto-sticker-txt">"India's next creator star<br>is probably in this area."<br><br>[ QR Code ] CreatorVerse</div>
+            <div class="auto-sticker-qr"></div>
+          </div>
+          <div style="display:flex;gap:1rem;margin-top:.75rem">
+            <div style="text-align:center;flex:1">
+              <div class="big-stat cyan" style="font-size:1.5rem">48,000</div>
+              <div style="font-size:8px;color:var(--z500);font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:.1em">impressions/day</div>
+            </div>
+            <div style="text-align:center;flex:1">
+              <div class="big-stat lime" style="font-size:1.5rem">₹100</div>
+              <div style="font-size:8px;color:var(--z500);font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:.1em">per day</div>
+            </div>
+          </div>
+        </div>
+        <!-- Chai stall -->
+        <div class="card" style="padding:1.5rem">
+          <div class="label label-cyan" style="margin-bottom:.75rem">6. Chai Stall QR Alliance</div>
+          <p class="body-sm italic" style="margin-bottom:1rem">Branded paper cups with QR codes. ₹1.50/cup. ₹2 incentive per scan to the stall owner. Students see it 3–5 times before they act.</p>
+          <div style="display:flex;align-items:center;gap:1rem">
+            <div class="chai-cup" style="width:90px">
+              <div class="chai-cup-logo">Creator<br>Verse</div>
+              <div class="chai-qr"></div>
+              <div class="chai-cta">Scan & Be Found</div>
+            </div>
+            <div style="flex:1">
+              <p class="body-sm italic">"High dwell time + repeated exposure = retention. Students see it 3–5 times before they act."</p>
+              <div style="margin-top:.5rem;background:var(--z950);padding:.5rem;font-family:'Space Mono',monospace;font-size:9px;color:var(--z600);text-transform:uppercase;letter-spacing:.1em">Cost: ₹1.50/cup · Return: ₹2/scan</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Campus Talent Head -->
+      <div class="card" style="padding:1.75rem">
+        <div class="label label-lime" style="margin-bottom:.75rem">7. Campus Talent Head Program</div>
+        <p class="body-md" style="margin-bottom:1rem">Appoint one student per campus as the official "CreatorVerse Campus Talent Head." A title, a digital badge for LinkedIn, and a referral dashboard.</p>
+        <!-- LinkedIn badge mock -->
+        <div class="li-post">
+          <div class="li-header">
+            <div class="li-ava">R</div>
+            <div class="li-meta">
+              <div class="li-name">Rahul Sharma</div>
+              <div class="li-role">Campus Talent Head @ CreatorVerse · Symbiosis, Pune</div>
+            </div>
+          </div>
+          <div class="li-body">
+            Honoured to be appointed as <strong>@CreatorVerse Campus Talent Head</strong> for Symbiosis Pune 🎯<br><br>
+            If you create content and you're at Symbiosis — I know people. <strong>DM me.</strong><br><br>
+            <span style="color:#0077b5">#FindTheFaces #CreatorVerse #ContentCreators</span>
+          </div>
+          <div class="li-engagement">
+            <span class="li-eng-item">👍 214 reactions</span>
+            <span class="li-eng-item">32 comments</span>
+            <span class="li-eng-item">89 reposts</span>
+          </div>
+        </div>
+        <div style="margin-top:1rem;display:flex;gap:1rem">
+          <div class="card-sm" style="flex:1;background:var(--z950)">Top head → Paid internship</div>
+          <div class="card-sm" style="flex:1;background:var(--z950)">Each head → 30–100 sign-ups</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 12: PHASE TWO - MICRO CREATORS ===== -->
+<div class="slide">
+  <div class="content-wrap">
+    <div class="section-tag">SECTION 05 — PHASE TWO</div>
+    <h2 class="slide-h2">The <span>Under-Monetized.</span></h2>
+    <div class="g2 gap2">
+      <div class="flex-c">
+        <p class="body-lg">After students bring volume, the next unlock is local creators and micro-influencers — the 1k to 30k follower bracket. They already have an audience. They have zero infrastructure to turn it into money.</p>
+        <div style="padding:1.5rem;border:1px solid var(--cyan);background:rgba(0,209,255,.04)">
+          <p style="font-family:'Unbounded',sans-serif;font-size:clamp(.9rem,2vw,1.4rem);font-weight:900;font-style:italic;text-transform:uppercase;line-height:1;letter-spacing:-.03em">"They are not too small. They are just underestimated. And they know it. That's the angle."</p>
+        </div>
+        <div class="flex-c" style="gap:.5rem">
+          <div class="card card-lime"><div class="label label-lime">The Insight</div><p class="body-sm italic">Micro-creators consistently deliver higher engagement. Brands get better ROI from 10k creators than 500k — but nobody tells them that.</p></div>
+          <div class="card"><div class="label label-cyan">The Pitch</div><p class="body-sm italic">"You have been undercharging for years because no one gave you the tools. CreatorVerse gives you a verified profile, real contracts, and a price benchmark."</p></div>
+          <div class="card"><div class="label" style="color:var(--z400)">The Hook</div><p class="body-sm italic">Free onboarding, verified badge, pricing guidance. They get structure and dignity. Platform gets authentic inventory.</p></div>
+        </div>
+      </div>
+      <!-- Engagement rate comparison chart visual -->
+      <div class="card" style="padding:1.5rem">
+        <div class="label label-lime" style="margin-bottom:1rem">Engagement Rate vs Follower Count</div>
+        <div class="flex-c" style="gap:.5rem">
+          <div style="display:flex;align-items:center;gap:.75rem">
+            <div style="font-size:9px;color:var(--z500);width:60px;text-align:right;flex-shrink:0">1k–10k</div>
+            <div style="flex:1;height:20px;background:var(--z800);border-radius:2px;position:relative;overflow:hidden">
+              <div style="height:100%;width:87%;background:var(--lime);border-radius:2px"></div>
+            </div>
+            <div style="font-size:10px;font-weight:900;color:var(--lime);width:36px">8.7%</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:.75rem">
+            <div style="font-size:9px;color:var(--z500);width:60px;text-align:right;flex-shrink:0">10k–30k</div>
+            <div style="flex:1;height:20px;background:var(--z800);border-radius:2px;position:relative;overflow:hidden">
+              <div style="height:100%;width:63%;background:var(--lime);border-radius:2px;opacity:.8"></div>
+            </div>
+            <div style="font-size:10px;font-weight:900;color:var(--lime);width:36px">5.7%</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:.75rem">
+            <div style="font-size:9px;color:var(--z500);width:60px;text-align:right;flex-shrink:0">30k–100k</div>
+            <div style="flex:1;height:20px;background:var(--z800);border-radius:2px;position:relative;overflow:hidden">
+              <div style="height:100%;width:39%;background:var(--cyan);border-radius:2px;opacity:.7"></div>
+            </div>
+            <div style="font-size:10px;font-weight:900;color:var(--cyan);width:36px">3.2%</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:.75rem">
+            <div style="font-size:9px;color:var(--z500);width:60px;text-align:right;flex-shrink:0">100k–500k</div>
+            <div style="flex:1;height:20px;background:var(--z800);border-radius:2px;position:relative;overflow:hidden">
+              <div style="height:100%;width:18%;background:var(--z600);border-radius:2px"></div>
+            </div>
+            <div style="font-size:10px;font-weight:900;color:var(--z500);width:36px">1.8%</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:.75rem">
+            <div style="font-size:9px;color:var(--z500);width:60px;text-align:right;flex-shrink:0">500k+</div>
+            <div style="flex:1;height:20px;background:var(--z800);border-radius:2px;position:relative;overflow:hidden">
+              <div style="height:100%;width:9%;background:var(--z700);border-radius:2px"></div>
+            </div>
+            <div style="font-size:10px;font-weight:900;color:var(--z600);width:36px">0.9%</div>
+          </div>
+        </div>
+        <p style="font-size:9px;color:var(--z600);font-family:'Space Mono',monospace;text-transform:uppercase;margin-top:1rem;letter-spacing:.1em">Avg engagement rate by follower bracket (Instagram, India 2024)</p>
+        <div class="qblock" style="margin-top:1rem;font-size:.85rem">Brands get better ROI from 10k creators than 500k ones. Nobody tells the 10k creator that.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 13: RATE CALCULATOR ===== -->
+<div class="slide">
+  <div class="content-wrap">
+    <div class="section-tag">PHASE 2 — TOOL DROP</div>
+    <h2 class="slide-h2">The Rate <span>Calculator.</span><br><span class="lime" style="font-size:55%">"What Are You Actually Worth?"</span></h2>
+    <div class="g2 gap2" style="align-items:start">
+      <div class="flex-c">
+        <p class="body-md">Create a free, public tool. Input followers, platform, engagement rate, niche. It tells you your market rate based on actual platform data. No login required. Shareable link. Goes viral in creator communities.</p>
+        <div class="flex-c" style="gap:.5rem;margin-top:.5rem">
+          <div class="card-sm">🔗 Standalone tool — last screen: "Want to start earning this? Join CreatorVerse."</div>
+          <div class="card-sm">📈 Estimated viral coefficient: <strong style="color:var(--lime)">3.5x</strong> — every user shares it with 3+ creators.</div>
+        </div>
+        <!-- IG post sharing the tool -->
+        <div class="ig-post" style="max-width:100%;margin-top:.75rem">
+          <div class="ig-header">
+            <div class="ig-avatar">P</div>
+            <div><div class="ig-handle">priya.creates</div><div class="ig-handle-sub">Mumbai · Content Creator</div></div>
+          </div>
+          <div class="ig-img" style="background:linear-gradient(135deg,#1a0533,#002244);padding:1rem">
+            <div style="background:var(--lime);border-radius:8px;padding:.75rem 1rem;text-align:center;width:80%">
+              <div style="font-family:'Unbounded',sans-serif;font-size:.6rem;font-weight:900;color:#000;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.25rem">CreatorVerse Rate Calculator</div>
+              <div style="font-size:.5rem;color:#333;margin-bottom:.5rem">For Instagram · 12,400 followers · 6.2% eng</div>
+              <div style="font-family:'Unbounded',sans-serif;font-size:1.5rem;font-weight:900;color:#000">₹8,500–12,000</div>
+              <div style="font-size:.5rem;color:#555;text-transform:uppercase;letter-spacing:.15em">per sponsored post</div>
+            </div>
+          </div>
+          <div class="ig-actions">
+            <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </div>
+          <div class="ig-likes">3,241 likes</div>
+          <div class="ig-caption"><strong>priya.creates</strong> bro i've been charging ₹3,000 per reel. this tool says i should be charging <strong>4x that</strong>. registering on CreatorVerse now 😭🔥 <span class="ig-tag">#FindYourWorth #CreatorVerse</span></div>
+        </div>
+      </div>
+      <!-- Rate calculator mockup -->
+      <div class="flex-c">
+        <div class="calc-ui">
+          <div style="font-family:'Unbounded',sans-serif;font-size:.7rem;font-weight:900;text-transform:uppercase;color:var(--lime);letter-spacing:.1em;margin-bottom:1rem">RATE CALCULATOR ✦</div>
+          <div style="font-size:9px;color:var(--z500);text-transform:uppercase;letter-spacing:.2em;margin-bottom:.25rem">Platform</div>
+          <select class="calc-input" style="appearance:none;cursor:pointer"><option>Instagram</option><option>YouTube</option><option>Twitter/X</option></select>
+          <div style="font-size:9px;color:var(--z500);text-transform:uppercase;letter-spacing:.2em;margin-bottom:.25rem">Followers</div>
+          <input class="calc-input" type="text" placeholder="e.g. 12,400" value="12,400"/>
+          <div style="font-size:9px;color:var(--z500);text-transform:uppercase;letter-spacing:.2em;margin-bottom:.25rem">Engagement Rate</div>
+          <input class="calc-input" type="text" placeholder="e.g. 6.2%" value="6.2%"/>
+          <div style="font-size:9px;color:var(--z500);text-transform:uppercase;letter-spacing:.2em;margin-bottom:.25rem">Niche</div>
+          <select class="calc-input" style="appearance:none;cursor:pointer"><option>Fashion & Lifestyle</option><option>Food & Beverage</option><option>Tech</option><option>Fitness</option></select>
+          <div class="calc-result">
+            <div class="calc-label">Your market rate per post</div>
+            <div class="calc-amount">₹8,500 – ₹12,000</div>
+            <div style="font-size:9px;color:var(--z500);margin-top:.3rem">Based on 2024 creator economy data</div>
+          </div>
+          <div style="margin-top:.75rem;background:var(--lime);color:#000;text-align:center;padding:.5rem;font-family:'Unbounded',sans-serif;font-size:.65rem;font-weight:900;text-transform:uppercase;cursor:pointer">Want to earn this? Join CreatorVerse →</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 14: OPEN MIC SCOUTING ===== -->
+<div class="slide">
+  <div class="content-wrap">
+    <div class="section-tag">PHASE 2 — ACTIVATION</div>
+    <h2 class="slide-h2">Open Mic <span>Scouting.</span><br><span class="lime" style="font-size:55%">Scarcity + Recognition = Highest Conversion.</span></h2>
+    <div class="g2 gap2" style="align-items:start">
+      <div class="flex-c">
+        <p class="body-md">Send 2–3 CreatorVerse "spotters" to open mics, art shows, comedy nights, poetry jams. They watch, clap, and at the end hand the performer a card.</p>
+        <!-- Physical card -->
+        <div style="background:#f5f0e8;border:2px solid #222;padding:1.25rem;max-width:300px;font-family:'Unbounded',sans-serif">
+          <div style="font-size:.65rem;font-weight:900;text-transform:uppercase;color:#111;line-height:1.7;border-bottom:1px solid #222;padding-bottom:.5rem;margin-bottom:.5rem">"You were the best one<br>up there tonight."</div>
+          <div style="font-size:.55rem;color:#555;line-height:1.7">"We're building something for creators who deserve better than what Instagram offers."<br><br>"Register here if you're serious."</div>
+          <div style="display:flex;align-items:center;gap:.5rem;margin-top:.75rem">
+            <div style="width:32px;height:32px;background:#111"></div>
+            <div>
+              <div style="font-size:.55rem;font-weight:900;text-transform:uppercase;color:#111">CreatorVerse</div>
+              <div style="font-size:.5rem;color:#555">creatorverse.in/join</div>
+            </div>
+          </div>
+        </div>
+        <div class="flex-c" style="gap:.5rem;margin-top:.5rem">
+          <div class="card-sm">💰 Cost: ₹0 except card printing. Return: 1 motivated, personal creator per visit.</div>
+          <div class="card-sm">📊 Scarcity + personal recognition = highest conversion rate of any channel tested.</div>
+        </div>
+      </div>
+      <!-- IG post from creator who got scouted -->
+      <div class="flex-c" style="gap:1rem">
+        <div class="ig-post">
+          <div class="ig-header">
+            <div class="ig-avatar" style="background:linear-gradient(135deg,#833ab4,#fd1d1d)">K</div>
+            <div><div class="ig-handle">kartik.mic</div><div class="ig-handle-sub">Stand-up · Bangalore</div></div>
+          </div>
+          <div class="ig-img" style="background:linear-gradient(135deg,#0a0a1a,#1a0a0a);font-family:'Unbounded',sans-serif;font-size:.75rem;font-weight:900;text-transform:uppercase;text-align:center;line-height:1.4;padding:1.5rem">
+            "YOU WERE<br>THE BEST ONE<br>UP THERE<br>TONIGHT."<br><br><span style="font-size:.45rem;font-weight:400;letter-spacing:.2em;color:var(--z500)">— CreatorVerse scout, after my open mic set</span>
+          </div>
+          <div class="ig-actions">
+            <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </div>
+          <div class="ig-likes">5,892 likes</div>
+          <div class="ig-caption"><strong>kartik.mic</strong> got handed a card after my set last night. looked it up. registering on <strong>@creatorverse</strong> right now. if you perform, you should too. <span class="ig-tag">#CreatorVerse #OpenMic #Bangalore</span></div>
+        </div>
+        <div class="card-sm italic" style="font-size:10px">Each post like this reaches a creator's entire existing audience — the most relevant possible distribution for a creator platform.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 15: HIGH-VALUE CREATORS ===== -->
+<div class="slide">
+  <div class="content-wrap">
+    <div class="section-tag">SECTION 06 — PHASE THREE</div>
+    <h2 class="slide-h2">High-Value Creators:<br><span>Invite, Don't Spam.</span></h2>
+    <div class="g2 gap2">
+      <div class="flex-c">
+        <p class="body-md" style="margin-bottom:1rem">Targeting 50k–500k creators with strong niche authority. They get 50 mass DMs a day. The approach has to be almost unnervingly personalized.</p>
+        <!-- Audit email/DM -->
+        <div class="dm-thread" style="max-width:100%">
+          <div class="dm-header">
+            <div class="dm-ava"></div>
+            <div><div class="dm-name">CreatorVerse</div><div class="dm-status">● online</div></div>
+          </div>
+          <div class="dm-body">
+            <div class="dm-time">09:41 AM</div>
+            <div class="dm-us" style="max-width:90%">Hey @niharika.lifestyle — we did your audit. You're leaving ₹2–4L on the table annually. Here's why 👇</div>
+            <div class="dm-us" style="max-width:88%">Your current avg rate: ~₹12,000/post. Market rate for your niche + engagement: ₹28,000–35,000. Gap: 2.5x undercharging.</div>
+            <div class="dm-us" style="max-width:85%">We built a platform that fixes exactly this. No pitch — this audit is just for you. Want the full 1-pager?</div>
+            <div class="dm-time">09:43 AM</div>
+            <div class="dm-them">wait this is actually really specific?? how do you have my data</div>
+            <div class="dm-them">also yes i want the full thing lol</div>
+          </div>
+        </div>
+      </div>
+      <div class="flex-c" style="gap:1rem">
+        <div class="card card-cyan" style="padding:1.5rem">
+          <div class="label label-cyan">The Audit Drop</div>
+          <p class="body-sm italic" style="margin:.5rem 0">"We did your audit. You're leaving ₹2–4L on the table annually."</p>
+          <p class="body-sm">Research 50 creators deeply. Build a 1-page Creator Audit. This is not a pitch. This is a gift. Target: 30–40% response rate.</p>
+        </div>
+        <div class="card card-lime" style="padding:1.5rem">
+          <div class="label label-lime">The Guarantee</div>
+          <p class="body-sm italic" style="margin:.5rem 0">"One Creator, One Deal" — guaranteed brand intro within 60 days, or team does outreach at no cost.</p>
+          <p class="body-sm">Risk reversal play for first 20 high-value creators. Turns them into 20 case studies. Case studies bring the next 200.</p>
+        </div>
+        <div style="display:flex;gap:1rem">
+          <div class="card" style="flex:1;text-align:center;padding:1rem">
+            <div class="big-stat cyan" style="font-size:1.8rem">30–40%</div>
+            <div style="font-size:8px;text-transform:uppercase;color:var(--z500);letter-spacing:.15em;font-family:'Space Mono',monospace;margin-top:.25rem">response rate</div>
+          </div>
+          <div class="card" style="flex:1;text-align:center;padding:1rem">
+            <div class="big-stat lime" style="font-size:1.8rem">15–20%</div>
+            <div style="font-size:8px;text-transform:uppercase;color:var(--z500);letter-spacing:.15em;font-family:'Space Mono',monospace;margin-top:.25rem">onboarding rate</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 16: BRANDS COME LAST ===== -->
+<div class="slide">
+  <div class="content-wrap">
+    <div class="section-tag">SECTION 07 — PHASE FOUR</div>
+    <h2 class="slide-h2">Brands Come Last.<br><span class="lime" style="font-size:60%">And That's a Power Move.</span></h2>
+    <div class="g2 gap2">
+      <div class="flex-c">
+        <p class="body-md">Conventional logic says get brands first. That logic built every failed creator marketplace. Brands show up when they see verified inventory that converts.</p>
+        <div style="padding:1.5rem;border-left:4px solid var(--cyan);background:var(--z900);font-style:italic;color:#fff;font-weight:700;line-height:2.2">
+          <p>"We have 500 verified creators across 12 niches with API-connected stats and contracts ready to go."</p>
+          <p>"Your campaign can be live in 72 hours."</p>
+          <p>"Every payment is in escrow. You only pay when you approve the deliverable."</p>
+        </div>
+        <p class="body-sm italic" style="margin-top:.5rem">That is a fundamentally different conversation than "we're building a marketplace, want to join?"</p>
+      </div>
+      <div class="flex-c" style="gap:.5rem">
+        <div class="label label-lime" style="margin-bottom:.25rem">Who to target first</div>
+        <div style="background:var(--z950);border:1px solid var(--z800);padding:.75rem 1rem;display:grid;grid-template-columns:1fr 1.5fr;gap:.5rem;border-bottom:none">
+          <span style="font-size:9px;font-weight:900;text-transform:uppercase;color:var(--lime);font-family:'Space Mono',monospace">D2C Startups</span>
+          <span class="body-sm">High creator budgets, no internal team, allergic to agencies.</span>
+        </div>
+        <div style="background:var(--z950);border:1px solid var(--z800);padding:.75rem 1rem;display:grid;grid-template-columns:1fr 1.5fr;gap:.5rem;border-bottom:none;border-top:none">
+          <span style="font-size:9px;font-weight:900;text-transform:uppercase;color:var(--lime);font-family:'Space Mono',monospace">EdTech & FinTech</span>
+          <span class="body-sm">ROI-focused, trust-driven — micro-creators convert better here.</span>
+        </div>
+        <div style="background:var(--z950);border:1px solid var(--z800);padding:.75rem 1rem;display:grid;grid-template-columns:1fr 1.5fr;gap:.5rem;border-bottom:none;border-top:none">
+          <span style="font-size:9px;font-weight:900;text-transform:uppercase;color:var(--lime);font-family:'Space Mono',monospace">Local Businesses</span>
+          <span class="body-sm">Chai shops, boutiques — desperate to reach college-age audiences cheaply.</span>
+        </div>
+        <div style="background:var(--z950);border:1px solid var(--z800);padding:.75rem 1rem;display:grid;grid-template-columns:1fr 1.5fr;gap:.5rem;border-top:none">
+          <span style="font-size:9px;font-weight:900;text-transform:uppercase;color:var(--lime);font-family:'Space Mono',monospace">Bootstrapped Founders</span>
+          <span class="body-sm">They understand the hustle. CreatorVerse speaks their language. Move fast.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 17: BRAND ACQUISITION MOVE ===== -->
+<div class="slide">
+  <div class="content-wrap">
+    <div class="section-tag">SECTION 07 — PHASE FOUR</div>
+    <h2 class="slide-h2">The Brand <span>DM Play.</span></h2>
+    <div class="g2 gap2" style="align-items:start">
+      <div class="flex-c">
+        <p class="body-md">Find 5 D2C brands with "where did you find this creator?" in their comment sections. DM the <em>founder</em> — not the marketing manager — with a screenshot of those comments.</p>
+        <div class="qblock" style="margin:.5rem 0">"Your audience is already asking you to do more of this."<br><br>"We can give you 10 verified creators with real stats and a contract ready."<br><br>"First campaign: no platform fee. Just test us."</div>
+        <div class="card-sm">Zero-risk trial lowers every objection. Target: 10 brand trial partnerships.</div>
+        <div style="display:flex;gap:.75rem;margin-top:.5rem">
+          <div class="card" style="flex:1;text-align:center;padding:1rem">
+            <div class="big-stat cyan" style="font-size:1.8rem">5–10</div>
+            <div style="font-size:8px;text-transform:uppercase;color:var(--z500);letter-spacing:.15em;font-family:'Space Mono',monospace;margin-top:.25rem">brand trials targeted</div>
+          </div>
+          <div class="card" style="flex:1;text-align:center;padding:1rem">
+            <div class="big-stat lime" style="font-size:1.8rem">72hrs</div>
+            <div style="font-size:8px;text-transform:uppercase;color:var(--z500);letter-spacing:.15em;font-family:'Space Mono',monospace;margin-top:.25rem">campaign live time</div>
+          </div>
+        </div>
+      </div>
+      <!-- IG comments + DM visual -->
+      <div class="flex-c" style="gap:1rem">
+        <div class="ig-post">
+          <div class="ig-header">
+            <div class="ig-avatar" style="background:linear-gradient(135deg,#f09433,#e6683c,#dc2743)">🍵</div>
+            <div><div class="ig-handle">chairepublic_india</div><div class="ig-handle-sub">Chai brand · 28k followers</div></div>
+          </div>
+          <div class="ig-img" style="background:linear-gradient(135deg,#1a0a00,#0a1a00);font-size:2rem;font-family:'Unbounded',sans-serif;font-weight:900;color:var(--lime)">CHAI 🍵</div>
+          <div class="ig-actions">
+            <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </div>
+          <div class="ig-likes">2,103 likes</div>
+          <div style="padding:.25rem .75rem .5rem;font-size:9px;color:var(--z400);border-top:1px solid #1a1a1a">
+            <div style="margin-bottom:.25rem;color:#888">Comments (142)</div>
+            <div style="margin-bottom:.2rem"><strong style="color:#fff">@foodie.priyanka</strong> where did you find this creator?? she's so authentic 😍</div>
+            <div style="margin-bottom:.2rem"><strong style="color:#fff">@delhi.chai.lover</strong> seriously WHERE did they find her though</div>
+            <div><strong style="color:#fff">@startup.watch.in</strong> the creator collab is fire, which platform did you use?</div>
+          </div>
+        </div>
+        <div class="card" style="padding:1rem;font-size:10px;font-style:italic;color:var(--z400);border-color:rgba(226,255,0,.3)">
+          🎯 <strong style="color:var(--lime)">That comment section is the pitch.</strong> Screenshot it. Send it to the founder with your DM. They already know they need this.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 18: FAKE BILLBOARD ===== -->
+<div class="slide">
+  <div class="content-wrap">
+    <div class="section-tag">SECTION 08 — THE CRACKHEAD ARSENAL</div>
+    <h2 class="slide-h2">The Fake <span>Billboard.</span></h2>
+    <div class="g2 gap2" style="align-items:center">
+      <div class="flex-c">
+        <p class="body-md">Rent a billboard near a tech park or college cluster. For one week, display a job ad — but it's not a job ad.</p>
+        <div class="billboard" style="max-width:100%">
+          <div style="font-size:9px;color:#555;font-family:monospace;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.5rem">POSTING ID: CV-001 · URGENT HIRE</div>
+          <div class="billboard-title">HIRING:<br>"India's next 1,000 verified content creators."<br><br>"No experience needed. Talent required."</div>
+          <div class="billboard-qr-wrap">
+            <div class="billboard-qr"></div>
+            <div class="billboard-brand">CreatorVerse</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:1rem;margin-top:.75rem">
+          <div class="card" style="flex:1;text-align:center;padding:1rem">
+            <div class="big-stat cyan" style="font-size:1.6rem">50k–200k</div>
+            <div style="font-size:8px;text-transform:uppercase;color:var(--z500);letter-spacing:.1em;font-family:'Space Mono',monospace;margin-top:.25rem">LinkedIn impressions<br>from billboard photos alone</div>
+          </div>
+          <div class="card" style="flex:1;text-align:center;padding:1rem">
+            <div class="big-stat lime" style="font-size:1.6rem">10x</div>
+            <div style="font-size:8px;text-transform:uppercase;color:var(--z500);letter-spacing:.1em;font-family:'Space Mono',monospace;margin-top:.25rem">earned media<br>vs ₹8k–25k cost</div>
+          </div>
+        </div>
+      </div>
+      <!-- LinkedIn viral moment -->
+      <div class="flex-c" style="gap:1rem">
+        <div class="li-post" style="max-width:100%">
+          <div class="li-header">
+            <div class="li-ava">V</div>
+            <div class="li-meta">
+              <div class="li-name">Vikram Rao</div>
+              <div class="li-role">VC Partner · Bengaluru · 12,400 followers</div>
+            </div>
+          </div>
+          <div class="li-body">
+            Spotted this billboard near Koramangala this morning.<br><br>
+            "HIRING: India's next 1,000 verified content creators. No experience needed. Talent required."<br><br>
+            <strong>Either this is the most genius creator platform launch I've seen, or someone is very lost.</strong><br><br>
+            Either way — it stopped me in traffic and I looked it up. <strong>@CreatorVerse</strong> — what are you building?<br><br>
+            <span style="color:#0077b5">#CreatorEconomy #StartupIndia #Marketing</span>
+          </div>
+          <div style="padding:.5rem .75rem;border-top:1px solid #1a1a1a">
+            <div style="font-size:9px;color:#0077b5;font-weight:700;cursor:pointer">📷 See photo [1]</div>
+          </div>
+          <div class="li-engagement">
+            <span class="li-eng-item">👍 4,211 reactions</span>
+            <span class="li-eng-item">312 comments</span>
+            <span class="li-eng-item">1,847 reposts</span>
+          </div>
+        </div>
+        <div class="card-sm" style="font-size:10px">Baffled professionals + excited students share on LinkedIn and Twitter. Earned media value: 10x the cost.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 19: SPOTIFY WRAPPED + ANTHEM ===== -->
+<div class="slide">
+  <div class="content-wrap">
+    <div class="section-tag">SECTION 08 — THE CRACKHEAD ARSENAL</div>
+    <h2 class="slide-h2">Wrapped. Anthem. <span>Reverse Pitch.</span></h2>
+    <div class="g3" style="gap:1.25rem">
+      <!-- Wrapped -->
+      <div class="flex-c" style="gap:.75rem">
+        <div class="label label-lime">3. CreatorVerse Wrapped</div>
+        <div class="wrapped-card">
+          <div>
+            <div style="font-size:9px;font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:.3em;color:var(--z500);margin-bottom:.25rem">Your Year In Talent</div>
+            <div class="wrapped-year">2024</div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem">
+            <div style="text-align:center">
+              <div class="wrapped-stat-val">47</div>
+              <div class="wrapped-stat-label">Brands searched<br>your niche</div>
+            </div>
+            <div style="text-align:center">
+              <div class="wrapped-stat-val" style="color:var(--lime)">₹2.4L</div>
+              <div class="wrapped-stat-label">Earnings<br>potential</div>
+            </div>
+            <div style="text-align:center">
+              <div class="wrapped-stat-val" style="color:var(--cyan)">TOP 8%</div>
+              <div class="wrapped-stat-label">Engagement<br>in niche</div>
+            </div>
+            <div style="text-align:center">
+              <div class="wrapped-stat-val">12</div>
+              <div class="wrapped-stat-label">Profile<br>views</div>
+            </div>
+          </div>
+          <div style="font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:var(--z600);text-align:center;padding-top:.5rem;border-top:1px solid rgba(255,255,255,.07)">Share on your story 📲</div>
+        </div>
+        <div class="card-sm italic">Shareable IG story format. Near 100% shareability among motivated creators.</div>
+      </div>
+      <!-- Anthem -->
+      <div class="flex-c" style="gap:.75rem">
+        <div class="label label-cyan">4. Anti-Hustle Anthem</div>
+        <div style="background:var(--z950);border:1px solid var(--z800);border-radius:8px;overflow:hidden">
+          <div style="background:#111;padding:.75rem;display:flex;align-items:center;gap:.75rem">
+            <div style="width:44px;height:44px;background:linear-gradient(135deg,#1a0533,#002244);border-radius:6px;display:flex;align-items:center;justify-content:center">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--lime)" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+            </div>
+            <div style="flex:1">
+              <div style="font-size:11px;font-weight:700">Luck Shouldn't Decide Fame</div>
+              <div style="font-size:9px;color:var(--z500)">CreatorVerse × @campus.artist</div>
+            </div>
+            <div style="width:28px;height:28px;background:var(--lime);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="#000"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            </div>
+          </div>
+          <div style="padding:.75rem">
+            <div style="height:3px;background:var(--z800);border-radius:2px;margin-bottom:.5rem">
+              <div style="height:100%;width:35%;background:var(--lime);border-radius:2px"></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:8px;color:var(--z600);font-family:'Space Mono',monospace">
+              <span>0:21</span><span>1:04</span>
+            </div>
+          </div>
+        </div>
+        <p class="body-sm italic">Commission original 60-second rap from a campus creator found via #FindTheFaces. Release as brand anthem. Content that happens to recruit.</p>
+        <div class="card-sm">Creator gets full credit, case study write-up, and early partner status.</div>
+      </div>
+      <!-- LinkedIn Reverse Pitch -->
+      <div class="flex-c" style="gap:.75rem">
+        <div class="label" style="color:var(--z400)">5. LinkedIn Reverse Pitch</div>
+        <div class="li-post" style="max-width:100%">
+          <div class="li-header">
+            <div class="li-ava" style="background:linear-gradient(135deg,var(--lime),var(--cyan))">D</div>
+            <div class="li-meta">
+              <div class="li-name">Diya Nathwani</div>
+              <div class="li-role">Founder, CreatorVerse · 2nd</div>
+            </div>
+          </div>
+          <div class="li-body">
+            We're a new platform and we need 500 creators. Here is exactly what we offer and what we cannot offer yet. (A thread on radical honesty)<br><br>
+            ✅ What we offer: verified profile, auto-contracts, escrow payments, brand discovery.<br>
+            ❌ What we can't yet: a 1M-creator network. We're at 200 and growing.<br><br>
+            <strong>If you're a creator who wants structure, not scale — join us first.</strong>
+          </div>
+          <div class="li-engagement">
+            <span class="li-eng-item">👍 8,412 reactions</span>
+            <span class="li-eng-item">Radical transparency wins</span>
+          </div>
+        </div>
+        <div class="card-sm italic">Estimated reach: 20,000–100,000 impressions. Zero ad spend. Founders and CMOs will share this.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 20: 90-DAY METRICS ===== -->
+<div class="slide">
+  <div class="content-wrap">
+    <div class="section-tag">SECTION 09 — THE NUMBERS</div>
+    <h2 class="slide-h2">What Success <span>Looks Like.</span><br><span class="lime" style="font-size:55%">First 90 Days.</span></h2>
+    <div class="flex-c">
+      <div class="g4" style="gap:.75rem;margin-bottom:1rem">
+        <div class="card" style="text-align:center;padding:1.25rem">
+          <div class="big-stat lime">2,000+</div>
+          <div style="font-size:8px;text-transform:uppercase;color:var(--z500);letter-spacing:.15em;font-family:'Space Mono',monospace;margin-top:.25rem">Campus registrations</div>
+        </div>
+        <div class="card" style="text-align:center;padding:1.25rem">
+          <div class="big-stat cyan">500+</div>
+          <div style="font-size:8px;text-transform:uppercase;color:var(--z500);letter-spacing:.15em;font-family:'Space Mono',monospace;margin-top:.25rem">Micro-creators onboarded</div>
+        </div>
+        <div class="card" style="text-align:center;padding:1.25rem">
+          <div class="big-stat lime">20+</div>
+          <div style="font-size:8px;text-transform:uppercase;color:var(--z500);letter-spacing:.15em;font-family:'Space Mono',monospace;margin-top:.25rem">High-value creators</div>
+        </div>
+        <div class="card" style="text-align:center;padding:1.25rem">
+          <div class="big-stat cyan">10+</div>
+          <div style="font-size:8px;text-transform:uppercase;color:var(--z500);letter-spacing:.15em;font-family:'Space Mono',monospace;margin-top:.25rem">Brand trials</div>
+        </div>
+      </div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Metric</th><th>Target (90 Days)</th><th>Primary Driver</th></tr></thead>
+          <tbody>
+            <tr><td class="td-white">Campus Registrations</td><td class="td-cyan">500–2,000</td><td class="td-val">Low cost, high FOMO — leaderboard + posters</td></tr>
+            <tr><td class="td-white">Micro-Creator Onboarding</td><td class="td-cyan">200–500</td><td class="td-val">Rate Calculator virality (3.5x coefficient)</td></tr>
+            <tr><td class="td-white">High-Value Invitations Sent</td><td class="td-cyan">50</td><td class="td-val">Personalized audit drops + guarantee model</td></tr>
+            <tr><td class="td-white">High-Value Creators Onboarded</td><td class="td-cyan">10–20</td><td class="td-val">30–40% response → 15–20% onboard</td></tr>
+            <tr><td class="td-white">Brand Trial Partnerships</td><td class="td-cyan">5–10</td><td class="td-val">Founder DM strategy + zero-risk first campaign</td></tr>
+            <tr><td class="td-white">UGC Talent Posts</td><td class="td-cyan">500+</td><td class="td-val">Organic #FindTheFaces challenge</td></tr>
+            <tr><td class="td-white">Platform-Facilitated Deals</td><td class="td-cyan">5–15</td><td class="td-val">First brand-creator transactions by Day 90</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 21: UNIT ECONOMICS ===== -->
+<div class="slide">
+  <div class="content-wrap">
+    <div class="section-tag">SECTION 09 — THE NUMBERS</div>
+    <h2 class="slide-h2">Unit Economics <span>Logic.</span></h2>
+    <div class="g2 gap2" style="align-items:center">
+      <div class="flex-c">
+        <div class="qblock" style="font-size:1rem">
+          "If a single mid-tier creator brings 3 brand deals at ₹15,000 average, that is ₹45,000 in GMV per creator per quarter. At a 15% platform take: ₹6,750 per creator per quarter."
+        </div>
+        <div style="background:#000;border:1px solid var(--z800);padding:1.25rem">
+          <p style="font-family:'Unbounded',sans-serif;font-size:clamp(.9rem,1.8vw,1.5rem);font-weight:900;font-style:italic;text-transform:uppercase;line-height:1;letter-spacing:-.03em">At 200 active mid-tier creators: ₹13.5L quarterly GMV. Platform take: ₹2L+/quarter.</p>
+        </div>
+        <!-- Simple bar visualization -->
+        <div class="card" style="padding:1.25rem">
+          <div class="label label-lime" style="margin-bottom:.75rem">Quarterly GMV build-up</div>
+          <div style="display:flex;flex-direction:column;gap:.4rem">
+            <div style="display:flex;align-items:center;gap:.5rem">
+              <div style="font-size:9px;color:var(--z500);width:60px;flex-shrink:0">Month 1</div>
+              <div style="flex:1;height:16px;background:var(--z800);border-radius:2px"><div style="height:100%;width:15%;background:var(--lime);border-radius:2px"></div></div>
+              <div style="font-size:9px;font-weight:700;color:var(--lime);width:50px">₹2.2L</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:.5rem">
+              <div style="font-size:9px;color:var(--z500);width:60px;flex-shrink:0">Month 2</div>
+              <div style="flex:1;height:16px;background:var(--z800);border-radius:2px"><div style="height:100%;width:40%;background:var(--lime);border-radius:2px"></div></div>
+              <div style="font-size:9px;font-weight:700;color:var(--lime);width:50px">₹5.8L</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:.5rem">
+              <div style="font-size:9px;color:var(--z500);width:60px;flex-shrink:0">Month 3</div>
+              <div style="flex:1;height:16px;background:var(--z800);border-radius:2px"><div style="height:100%;width:100%;background:var(--lime);border-radius:2px"></div></div>
+              <div style="font-size:9px;font-weight:700;color:var(--lime);width:50px">₹13.5L</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flex-c" style="gap:1rem">
+        <div style="padding:1.5rem;border:1px solid var(--z800);background:rgba(226,255,0,.04);display:flex;align-items:flex-start;gap:1rem">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--lime)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          <p style="color:var(--z300);font-size:.9rem;font-weight:700;text-transform:uppercase;font-style:italic;line-height:1.5">"The real value: Data moat. Every deal done on CreatorVerse makes the algorithm smarter, the matching better, and the defensibility higher."</p>
+        </div>
+        <div class="card card-cyan" style="padding:1.25rem">
+          <div class="label label-cyan">The compounding moat</div>
+          <div style="display:flex;gap:1rem;margin-top:.75rem;text-align:center">
+            <div style="flex:1"><div style="font-family:'Unbounded',sans-serif;font-size:1rem;font-weight:900;color:#fff;font-style:italic">PRICING</div><div style="font-size:8px;color:var(--z500);font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:.1em;margin-top:.25rem">Market benchmarks</div></div>
+            <div style="width:1px;background:var(--z800)"></div>
+            <div style="flex:1"><div style="font-family:'Unbounded',sans-serif;font-size:1rem;font-weight:900;color:#fff;font-style:italic">PERF.</div><div style="font-size:8px;color:var(--z500);font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:.1em;margin-top:.25rem">Success metadata</div></div>
+            <div style="width:1px;background:var(--z800)"></div>
+            <div style="flex:1"><div style="font-family:'Unbounded',sans-serif;font-size:1rem;font-weight:900;color:#fff;font-style:italic">MATCH</div><div style="font-size:8px;color:var(--z500);font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:.1em;margin-top:.25rem">AI accuracy</div></div>
+          </div>
+        </div>
+        <!-- Ticker of metrics -->
+        <div class="ticker-wrap">
+          <div class="ticker-track">
+            <span class="ticker-item"><span class="ticker-dot"></span>CAC: ₹5–₹30 campus</span>
+            <span class="ticker-item"><span class="ticker-dot"></span>LTV: ₹6,750/creator/quarter</span>
+            <span class="ticker-item"><span class="ticker-dot"></span>Platform take: 15%</span>
+            <span class="ticker-item"><span class="ticker-dot"></span>Escrow auto-release: 100%</span>
+            <span class="ticker-item"><span class="ticker-dot"></span>Viral coefficient: 3.5x</span>
+            <span class="ticker-item"><span class="ticker-dot"></span>CAC: ₹5–₹30 campus</span>
+            <span class="ticker-item"><span class="ticker-dot"></span>LTV: ₹6,750/creator/quarter</span>
+            <span class="ticker-item"><span class="ticker-dot"></span>Platform take: 15%</span>
+            <span class="ticker-item"><span class="ticker-dot"></span>Escrow auto-release: 100%</span>
+            <span class="ticker-item"><span class="ticker-dot"></span>Viral coefficient: 3.5x</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 22: CLOSING ===== -->
+<div class="slide">
+  <div class="hero-wrap" style="align-items:flex-start;justify-content:center;flex-direction:column">
+    <div class="section-tag" style="margin-bottom:1rem">CLOSING THOUGHT</div>
+    <h2 class="closing-h2">"Luck shouldn't decide fame. <span style="color:var(--lime)">We built the system</span> that makes sure it doesn't."</h2>
+    <div style="margin-top:2.5rem;max-width:680px;color:var(--z500);font-weight:300;font-size:1rem;line-height:1.8;font-style:italic">
+      <p style="margin-bottom:1rem">The biggest creators in India today were discovered by accident. An algorithm noticed them. A friend shared their video. A brand stumbled across their page. None of it was structured. None of it was fair. None of it scaled.</p>
+      <p>CreatorVerse is the infrastructure that removes luck from the equation. And this playbook is how we make sure enough people know it exists — loudly, memorably, and at a cost that makes the ROI case impossible to argue with.</p>
+    </div>
+    <div style="margin-top:3rem;display:flex;flex-direction:column;gap:.75rem">
+      <div style="width:5rem;height:1px;background:var(--z800)"></div>
+      <p style="font-family:'Space Mono',monospace;font-size:9px;color:var(--z600);text-transform:uppercase;letter-spacing:.6em;font-weight:700;font-style:italic">Diya Nathwani // Playbook // 2024</p>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<!-- FOOTER NAV -->
+<div class="footer-nav">
+  <div class="footer-inner">
+    <button class="nav-btn" id="prev-btn" onclick="prevSlide()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      Back
+    </button>
+    <span class="nav-center">The Operating System for Creators</span>
+    <button class="nav-btn" id="next-btn" onclick="nextSlide()">
+      Next
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </button>
+  </div>
+</div>
+
+</div>
+
 <script>
-  const slides = document.querySelectorAll('.slide');
-  const total = slides.length;
-  let current = 0;
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+let cur = 0;
 
-  function update() {
-    slides.forEach((s, i) => s.classList.toggle('active', i === current));
-    document.getElementById('progress').style.width = ((current + 1) / total * 100) + '%';
-    document.getElementById('counter').textContent =
-      String(current + 1).padStart(2,'0') + ' // ' + String(total).padStart(2,'0');
-    document.getElementById('prev-btn').disabled = current === 0;
-    document.getElementById('next-btn').disabled = current === total - 1;
-    // scroll content to top
-    document.getElementById('slides-container').scrollTop = 0;
-  }
-
-  function nextSlide() { if (current < total - 1) { current++; update(); } }
-  function prevSlide() { if (current > 0) { current--; update(); } }
-
-  document.addEventListener('keydown', e => {
-    if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
-    if (e.key === 'ArrowLeft') prevSlide();
-  });
-
-  update();
+function update() {
+  slides.forEach((s,i) => s.classList.toggle('active', i === cur));
+  document.getElementById('progress').style.width = ((cur+1)/total*100)+'%';
+  document.getElementById('counter').textContent = String(cur+1).padStart(2,'0')+' // '+String(total).padStart(2,'0');
+  document.getElementById('prev-btn').disabled = cur === 0;
+  document.getElementById('next-btn').disabled = cur === total-1;
+  document.getElementById('slides').scrollTop = 0;
+}
+function nextSlide(){ if(cur<total-1){cur++;update();} }
+function prevSlide(){ if(cur>0){cur--;update();} }
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key===' ')nextSlide();
+  if(e.key==='ArrowLeft')prevSlide();
+});
+update();
 </script>
 </body>
 </html>
